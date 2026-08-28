@@ -26,6 +26,7 @@ tests/               Lightweight MATLAB tests
 data/README.md       Dataset and licensing instructions
 docs/index.md        GitHub Pages project page
 proposal.md          Source proposal
+ELEC5305_Project_Proposal.tex  Self-contained Overleaf/LaTeX proposal
 proposal.pdf         Submission-ready proposal (generated after SID confirmation)
 references.bib       Academic references
 results/             Generated figures and metrics

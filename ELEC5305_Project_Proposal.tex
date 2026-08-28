@@ -1,0 +1,146 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{accent}{HTML}{117864}
+\definecolor{textgray}{HTML}{26332E}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  urlcolor=accent,
+  citecolor=accent,
+  pdftitle={ELEC5305 Project Proposal},
+  pdfauthor={Liya Xu}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{ELEC5305 Project Proposal}
+\rhead{Liya Xu}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.15em,topsep=0.2em}
+
+\newcommand{\projectsection}[1]{%
+  \vspace{0.3em}%
+  {\large\bfseries\color{accent} #1}\par
+  \vspace{0.15em}%
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries\color{textgray}
+  Modulation-Aware Adaptive Speech Enhancement\\
+  under Non-Stationary Noise\par}
+  \vspace{0.8em}
+  {\large ELEC5305 Project Proposal}
+\end{center}
+
+\projectsection{Student Information}
+
+\begin{tabularx}{\textwidth}{@{}>{\bfseries}l X@{}}
+Full Name & Liya Xu \\
+Student ID & 530519058 \\
+GitHub Username & Liyaxuxu \\
+GitHub Project & \url{https://github.com/Liyaxuxu/elec5305-project-530519058-speech-enhancement} \\
+GitHub Pages & \url{https://liyaxuxu.github.io/elec5305-project-530519058-speech-enhancement/} \\
+\end{tabularx}
+
+\projectsection{Project Overview}
+
+Speech enhancement aims to recover intelligible and natural speech from recordings corrupted by environmental noise. A practical difficulty is that real noise is non-stationary. A recording may move from stable ventilation noise to intermittent voices, traffic, or impacts, while the signal-to-noise ratio (SNR) changes over time. A spectral-subtraction or Wiener-filter system configured with one fixed suppression strength therefore tends either to leave substantial residual noise or to introduce musical noise and speech distortion.
+
+This project asks: \textbf{Can short-term modulation cues and frame-level SNR estimates be used to adapt noise tracking and time--frequency suppression so that speech quality and intelligibility improve over fixed-parameter spectral subtraction and Wiener filtering under non-stationary noise?}
+
+The proposed solution is an interpretable short-time Fourier transform (STFT) pipeline. It will measure how spectral energy changes over time, detect transitions between stable and rapidly varying interference, and adjust the noise-estimation rate and suppression gain accordingly. Fixed and adaptive methods will be evaluated at controlled SNRs, across several noise categories, and on held-out speakers and noise recordings.
+
+\projectsection{Background and Motivation}
+
+Spectral subtraction is a foundational enhancement method that estimates and subtracts a noise spectrum from the noisy speech magnitude \cite{boll1979}. Wiener filtering instead estimates a time--frequency gain from speech and noise statistics. Decision-directed a priori SNR estimation can reduce unstable gain changes \cite{scalart1996}. These methods are computationally efficient and directly connected to ELEC5305 topics including windowing, STFT analysis, modulation spectra, spectral estimation, filtering, and Wiener masks.
+
+Classical enhancement does not always improve intelligibility, particularly when the noise estimate is inaccurate or aggressive suppression creates artefacts \cite{loizou2011}. Non-stationary interference is especially challenging because a slowly updated estimator cannot follow sudden changes, while a rapidly updated estimator may absorb speech components into the noise model. Modulation information provides a low-cost description of temporal spectral change and can therefore control this trade-off without requiring a large neural network.
+
+VoiceBank-DEMAND provides paired clean and noisy utterances for objective enhancement evaluation \cite{voicebank2017,valentini2018}. It is sufficiently established for comparison while remaining manageable on standard computing hardware. The project combines reproducible classical baselines with a new, testable modulation-aware controller rather than treating one enhancement algorithm as universally optimal.
+
+\projectsection{Proposed Methodology}
+
+MATLAB will be the primary platform. Audio will be resampled and normalised consistently, divided into overlapping Hann-windowed frames, and transformed using the STFT. A noise power spectral density estimate will be updated during likely noise-dominant frames. Baseline one will use fixed spectral oversubtraction with a spectral floor. Baseline two will use a fixed Wiener gain with decision-directed SNR estimation.
+
+The proposed controller will calculate frame SNR, spectral flatness, band-energy ratios, and temporal modulation energy. A change score derived from consecutive log-power spectra will indicate whether the interference is stable or rapidly varying. During a detected transition, the noise estimator will update faster and the suppression gain will respond more quickly. During stable periods, slower updating and gain smoothing will reduce musical noise and speech distortion. Wiener and spectral-subtraction gains will be continuously blended rather than selected using a hard class decision.
+
+Experiments will use VoiceBank-DEMAND and selected DEMAND noise recordings. Controlled mixtures will be generated at $-5$, $0$, $5$, and $10$~dB SNR. Development and test partitions will be separated by speaker and noise recording to prevent leakage. Comparisons will include unprocessed noisy speech, fixed spectral subtraction, fixed Wiener filtering, SNR-only adaptation, and the complete modulation-aware method. Ablations will remove modulation detection, SNR adaptation, or temporal smoothing to determine which component contributes to performance.
+
+Evaluation will report output SNR improvement, segmental SNR, short-time objective intelligibility (STOI) \cite{taal2011}, optional PESQ where an authorised implementation is available, real-time factor, and representative spectrograms and audio examples. Results will be averaged across utterances and accompanied by bootstrap confidence intervals.
+
+\projectsection{Expected Outcomes}
+
+The main deliverable will be a working MATLAB prototype that reads noisy speech and produces enhanced audio using fixed or modulation-aware modes. The expected outcome is an improved quality--intelligibility trade-off and fewer severe failures when the noise changes abruptly. The project will provide reproducible scripts, documented data splits, configuration values, aggregate tables, ablations, spectrograms, listening examples, runtime measurements, and an analysis of limitations. The public GitHub repository and GitHub Pages site will contain the code, proposal, final report, results, and demonstration instructions.
+
+\projectsection{Timeline}
+
+\begin{tabularx}{\textwidth}{@{}p{2.4cm}X@{}}
+\toprule
+\textbf{Weeks} & \textbf{Planned work} \\
+\midrule
+1--2 & Refine the research question, confirm scope, and establish fixed baselines. \\
+3--5 & Review literature, obtain data, define leakage-free splits, and implement metrics. \\
+6--9 & Implement noise tracking, modulation analysis, adaptive control, and unit tests. \\
+10--11 & Run ablations, optimise on development data, and evaluate held-out conditions. \\
+12--13 & Interpret results, complete the report and video, and publish reproducible materials. \\
+\bottomrule
+\end{tabularx}
+
+\projectsection{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{boll1979}
+S. F. Boll, ``Suppression of acoustic noise in speech using spectral subtraction,''
+\emph{IEEE Transactions on Acoustics, Speech, and Signal Processing}, vol. 27,
+no. 2, pp. 113--120, 1979. doi: \href{https://doi.org/10.1109/TASSP.1979.1163209}{10.1109/TASSP.1979.1163209}.
+
+\bibitem{scalart1996}
+P. Scalart and J. V. Filho, ``Speech enhancement based on a priori signal to noise estimation,''
+in \emph{Proceedings of ICASSP}, vol. 2, pp. 629--632, 1996.
+doi: \href{https://doi.org/10.1109/ICASSP.1996.543199}{10.1109/ICASSP.1996.543199}.
+
+\bibitem{loizou2011}
+P. C. Loizou and G. Kim, ``Reasons why current speech-enhancement algorithms do not improve speech intelligibility and suggested solutions,''
+\emph{IEEE Transactions on Audio, Speech, and Language Processing}, vol. 19,
+no. 1, pp. 47--56, 2011. doi: \href{https://doi.org/10.1109/TASL.2010.2045180}{10.1109/TASL.2010.2045180}.
+
+\bibitem{voicebank2017}
+C. Valentini-Botinhao, ``Noisy speech database for training speech enhancement algorithms and TTS models,''
+University of Edinburgh DataShare, 2017.
+doi: \href{https://doi.org/10.7488/ds/2117}{10.7488/ds/2117}.
+
+\bibitem{valentini2018}
+C. Valentini-Botinhao and J. Yamagishi, ``Speech enhancement of noisy and reverberant speech for text-to-speech,''
+\emph{IEEE/ACM Transactions on Audio, Speech, and Language Processing}, vol. 26,
+no. 8, pp. 1420--1433, 2018.
+doi: \href{https://doi.org/10.1109/TASLP.2018.2828980}{10.1109/TASLP.2018.2828980}.
+
+\bibitem{taal2011}
+C. H. Taal, R. C. Hendriks, R. Heusdens, and J. Jensen,
+``An algorithm for intelligibility prediction of time-frequency weighted noisy speech,''
+\emph{IEEE Transactions on Audio, Speech, and Language Processing}, vol. 19,
+no. 7, pp. 2125--2136, 2011.
+doi: \href{https://doi.org/10.1109/TASL.2011.2114881}{10.1109/TASL.2011.2114881}.
+
+\end{thebibliography}
+
+\end{document}
