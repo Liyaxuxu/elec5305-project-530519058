@@ -1,4 +1,4 @@
-# Noise-Aware Adaptive Speech Enhancement
+# Modulation-Aware Adaptive Speech Enhancement
 
 **Author:** Liya Xu
 
