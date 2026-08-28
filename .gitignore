@@ -1,0 +1,7 @@
+data/raw/
+results/*.wav
+results/*.mat
+results/*.png
+*.asv
+*.m~
+.DS_Store
