@@ -9,7 +9,7 @@ This ELEC5305 project studies whether low-cost estimates of changing noise and S
 - Reproducible MATLAB implementation
 - Fixed spectral-subtraction and Wiener baselines
 - Adaptive time-frequency suppression controller
-- VoiceBank-DEMAND evaluation at four SNR levels
+- VoiceBank-DEMAND evaluation across multiple SNR conditions
 - SNR, STOI, runtime, ablation, and spectrogram results
 
 See the repository README for setup and reproduction instructions.
