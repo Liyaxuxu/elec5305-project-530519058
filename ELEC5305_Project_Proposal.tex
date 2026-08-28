@@ -30,6 +30,13 @@
 \rhead{Liya Xu}
 \cfoot{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \lhead{ELEC5305 Project Proposal}
+  \rhead{Liya Xu}
+  \cfoot{\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+}
 \setlength{\headheight}{14pt}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.55em}
@@ -57,8 +64,8 @@
 Full Name & Liya Xu \\
 Student ID & 530519058 \\
 GitHub Username & Liyaxuxu \\
-GitHub Project & {\small\url{https://github.com/Liyaxuxu/elec5305-project-530519058-speech-enhancement}} \\[0.35em]
-GitHub Pages & {\small\url{https://liyaxuxu.github.io/elec5305-project-530519058-speech-enhancement/}} \\
+GitHub Project & {\small\url{https://github.com/Liyaxuxu/elec5305-project-530519058}} \\[0.35em]
+GitHub Pages & {\small\url{https://liyaxuxu.github.io/elec5305-project-530519058/}} \\
 \end{tabularx}
 
 \projectsection{Project Overview}
@@ -75,21 +82,21 @@ Spectral subtraction estimates the noise spectrum and subtracts it from the magn
 
 However, noise reduction does not automatically mean that speech becomes easier to understand. If the noise estimate is wrong, aggressive processing can create musical noise or remove useful speech components \cite{loizou2011}. The update rate of the noise estimator is therefore important. A slow estimator cannot follow a sudden change, but an estimator that always updates quickly may mistake speech for noise.
 
-The proposed approach uses short-term modulation information as a simple indicator of change. If the spectral energy begins to vary rapidly, the system can react faster. When the noise is stable, it can use slower and smoother updates. This design remains easy to interpret and does not require training a large neural network. VoiceBank-DEMAND provides paired clean and noisy recordings, making it possible to compare enhanced speech against a clean reference \cite{voicebank2017,valentini2018}.
+The proposed approach uses short-term modulation information as a simple indicator of change. If the spectral energy begins to vary rapidly, the system can react faster. When the noise is stable, it can use slower and smoother updates. Modulation-domain processing has previously been applied to speech enhancement and provides a useful basis for this design \cite{paliwal2009}. The proposed controller remains easy to interpret and does not require training a large neural network. VoiceBank-DEMAND provides paired clean and noisy recordings, making it possible to compare enhanced speech against a clean reference \cite{voicebank2017,valentini2018}.
 
 \projectsection{Proposed Methodology}
 
 MATLAB will be the main platform. The implementation and experiment will be organised into the following stages:
 
 \begin{enumerate}[leftmargin=1.7em,itemsep=0.25em,topsep=0.25em]
-  \item \textbf{Pre-processing:} Resample and normalise each recording, divide it into overlapping Hann-windowed frames, and calculate the STFT.
+  \item \textbf{Pre-processing:} Resample and normalise each recording, divide it into 32-ms Hann-windowed frames with an 8-ms hop, and calculate the STFT.
   \item \textbf{Fixed baselines:} Implement spectral subtraction with a spectral floor and Wiener filtering with decision-directed SNR estimation. Their parameters will remain fixed for each recording.
-  \item \textbf{Noise and change estimation:} Estimate the noise power spectrum and frame SNR. A change score will be calculated from consecutive log-power spectra and short-term modulation energy.
+  \item \textbf{Noise and change estimation:} Estimate the noise power spectrum and frame SNR. The change score will combine the mean absolute difference between consecutive log-power spectra with modulation energy calculated from a 64-frame temporal DFT of subband-energy trajectories. Energy between 2 and 16 Hz will represent the short-term modulation component. The feature weights and decision threshold will be selected using development data only.
   \item \textbf{Adaptive control:} When the change score is high, update the noise estimate faster and allow the gain to react more quickly. During stable periods, use slower updates and stronger temporal smoothing. The final gain will blend the spectral-subtraction and Wiener gains.
   \item \textbf{Reconstruction:} Apply the gain to the noisy STFT and use the inverse STFT to produce the enhanced waveform.
 \end{enumerate}
 
-Experiments will use VoiceBank-DEMAND and selected DEMAND environmental noises. Controlled mixtures will be generated at $-5$, $0$, $5$, and $10$~dB SNR. Speakers and noise recordings reserved for final testing will not be used to select parameters. This separation prevents the method from being tuned to the test examples.
+Experiments will use VoiceBank-DEMAND and selected DEMAND environmental noises. Controlled mixtures will be generated at $-5$, $0$, $5$, and $10$~dB SNR. A development set of 200 utterances will be used to select thresholds and controller parameters. Final evaluation will use 400 disjoint mixtures, balanced across the four SNR levels and four noise categories. Speakers and noise recordings reserved for final testing will not be used during parameter selection. This separation prevents the method from being tuned to the test examples.
 
 The comparison will include noisy speech, fixed spectral subtraction, fixed Wiener filtering, SNR-only adaptation, and the complete modulation-aware method. Evaluation will report output SNR improvement, segmental SNR, short-time objective intelligibility (STOI) \cite{taal2011}, optional PESQ where an authorised implementation is available, and processing time. Spectrograms and short listening examples will help explain artefacts that are not obvious from a single score. Modulation detection, SNR adaptation, and smoothing will also be removed one at a time to show which parts of the system are useful.
 
@@ -113,8 +120,6 @@ The GitHub repository will include the complete code, data preparation instructi
 \bottomrule
 \end{tabularx}
 
-\projectsection{References}
-
 \begin{thebibliography}{9}
 
 \bibitem{boll1979}
@@ -131,6 +136,12 @@ doi: \href{https://doi.org/10.1109/ICASSP.1996.543199}{10.1109/ICASSP.1996.54319
 P. C. Loizou and G. Kim, ``Reasons why current speech-enhancement algorithms do not improve speech intelligibility and suggested solutions,''
 \emph{IEEE Transactions on Audio, Speech, and Language Processing}, vol. 19,
 no. 1, pp. 47--56, 2011. doi: \href{https://doi.org/10.1109/TASL.2010.2045180}{10.1109/TASL.2010.2045180}.
+
+\bibitem{paliwal2009}
+K. K. Paliwal, B. Schwerin, and K. Wojcicki,
+``Modulation domain spectral subtraction for speech enhancement,''
+in \emph{Proceedings of Interspeech}, pp. 1353--1356, 2009.
+doi: \href{https://doi.org/10.21437/Interspeech.2009-413}{10.21437/Interspeech.2009-413}.
 
 \bibitem{voicebank2017}
 C. Valentini-Botinhao, ``Noisy speech database for training speech enhancement algorithms and TTS models,''

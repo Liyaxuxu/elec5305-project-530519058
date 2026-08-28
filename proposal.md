@@ -5,8 +5,8 @@
 - Full Name: Liya Xu
 - Student ID: 530519058
 - GitHub Username: Liyaxuxu
-- GitHub Project: https://github.com/Liyaxuxu/elec5305-project-530519058-speech-enhancement
-- GitHub Pages: https://liyaxuxu.github.io/elec5305-project-530519058-speech-enhancement/
+- GitHub Project: https://github.com/Liyaxuxu/elec5305-project-530519058
+- GitHub Pages: https://liyaxuxu.github.io/elec5305-project-530519058/
 
 ## Project Overview
 
