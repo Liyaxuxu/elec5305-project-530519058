@@ -66,7 +66,7 @@ Speech recorded in real environments often contains background noise. More impor
 
 This project asks: \textbf{Can short-term modulation cues and frame-level SNR estimates be used to adapt noise tracking and time--frequency suppression so that speech quality and intelligibility improve over fixed-parameter spectral subtraction and Wiener filtering under non-stationary noise?}
 
-In this project, I will build a MATLAB system based on the short-time Fourier transform (STFT). The system will estimate the current signal-to-noise ratio (SNR) and measure how quickly the noise spectrum is changing. It will then adjust the noise-estimation speed and suppression strength frame by frame. I will compare this method with fixed spectral subtraction and fixed Wiener filtering under several noise types and SNR levels.
+A MATLAB system based on the short-time Fourier transform (STFT) will be developed. The system will estimate the current signal-to-noise ratio (SNR), measure how quickly the noise spectrum is changing, and adjust the noise-estimation speed and suppression strength frame by frame. Its performance will be compared with fixed spectral subtraction and fixed Wiener filtering under several noise types and SNR levels.
 
 \projectsection{Background and Motivation}
 
@@ -74,7 +74,7 @@ Spectral subtraction estimates the noise spectrum and subtracts it from the magn
 
 However, noise reduction does not automatically mean that speech becomes easier to understand. If the noise estimate is wrong, aggressive processing can create musical noise or remove useful speech components \cite{loizou2011}. The update rate of the noise estimator is therefore important. A slow estimator cannot follow a sudden change, but an estimator that always updates quickly may mistake speech for noise.
 
-My idea is to use short-term modulation information as a simple indicator of change. If the spectral energy begins to vary rapidly, the system can react faster. When the noise is stable, it can use slower and smoother updates. This keeps the method explainable and avoids the need to train a large neural network. VoiceBank-DEMAND provides paired clean and noisy recordings, which makes it possible to compare enhanced speech against a clean reference \cite{voicebank2017,valentini2018}.
+The proposed approach uses short-term modulation information as a simple indicator of change. If the spectral energy begins to vary rapidly, the system can react faster. When the noise is stable, it can use slower and smoother updates. This design remains easy to interpret and does not require training a large neural network. VoiceBank-DEMAND provides paired clean and noisy recordings, making it possible to compare enhanced speech against a clean reference \cite{voicebank2017,valentini2018}.
 
 \projectsection{Proposed Methodology}
 
@@ -88,13 +88,13 @@ MATLAB will be the main platform. The implementation and experiment will be orga
   \item \textbf{Reconstruction:} Apply the gain to the noisy STFT and use the inverse STFT to produce the enhanced waveform.
 \end{enumerate}
 
-Experiments will use VoiceBank-DEMAND and selected DEMAND environmental noises. I will generate controlled mixtures at $-5$, $0$, $5$, and $10$~dB SNR. Speakers and noise recordings used for final testing will not be used to select parameters. This separation is important because otherwise the method could be tuned to the test examples.
+Experiments will use VoiceBank-DEMAND and selected DEMAND environmental noises. Controlled mixtures will be generated at $-5$, $0$, $5$, and $10$~dB SNR. Speakers and noise recordings reserved for final testing will not be used to select parameters. This separation prevents the method from being tuned to the test examples.
 
-The comparison will include noisy speech, fixed spectral subtraction, fixed Wiener filtering, SNR-only adaptation, and the complete modulation-aware method. I will report output SNR improvement, segmental SNR, short-time objective intelligibility (STOI) \cite{taal2011}, optional PESQ where an authorised implementation is available, and processing time. Spectrograms and short listening examples will help explain artefacts that are not obvious from a single score. I will also remove modulation detection, SNR adaptation, and smoothing one at a time to show which parts of the system are useful.
+The comparison will include noisy speech, fixed spectral subtraction, fixed Wiener filtering, SNR-only adaptation, and the complete modulation-aware method. Evaluation will report output SNR improvement, segmental SNR, short-time objective intelligibility (STOI) \cite{taal2011}, optional PESQ where an authorised implementation is available, and processing time. Spectrograms and short listening examples will help explain artefacts that are not obvious from a single score. Modulation detection, SNR adaptation, and smoothing will also be removed one at a time to show which parts of the system are useful.
 
 \projectsection{Expected Outcomes}
 
-The main outcome will be a working MATLAB program that can process a noisy speech file using either a baseline method or the proposed adaptive method. I expect the adaptive method to be most useful when the background noise changes suddenly, but I will not assume that it must win in every condition. A successful project will show a repeatable improvement over at least one fixed baseline without causing a large drop in STOI or excessive processing time.
+The main outcome will be a working MATLAB program that can process a noisy speech file using either a baseline method or the proposed adaptive method. The adaptive method is expected to be most useful when the background noise changes suddenly, although it may not perform best in every condition. A successful result will show a repeatable improvement over at least one fixed baseline without causing a large drop in STOI or excessive processing time.
 
 The GitHub repository will include the complete code, data preparation instructions, experiment settings, tests, result tables, spectrograms, and selected audio examples. The report will also discuss cases where the method fails or introduces audible artefacts.
 
