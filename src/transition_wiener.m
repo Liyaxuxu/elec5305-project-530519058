@@ -25,6 +25,8 @@ thresholds = inf(1, nFrames);
 triggers = false(1, nFrames);
 noiseAlphaTrace = zeros(1, nFrames);
 gainAlphaTrace = zeros(1, nFrames);
+meanGainTrace = zeros(1, nFrames);
+meanNoisePsdTrace = zeros(1, nFrames);
 holdFrames = max(1, round(0.35 / hopSeconds));
 holdRemaining = 0;
 scoreHistory = [];
@@ -86,6 +88,8 @@ for k = 1:nFrames
 
     noiseAlphaTrace(k) = noiseAlpha;
     gainAlphaTrace(k) = gainAlpha;
+    meanGainTrace(k) = mean(gain);
+    meanNoisePsdTrace(k) = mean(noisePsd);
     scoreHistory = [scoreHistory scores(k)]; %#ok<AGROW>
     maxHistory = max(12, round(1.0 / hopSeconds));
     if numel(scoreHistory) > maxHistory
@@ -102,5 +106,7 @@ diagnostics = struct( ...
     'changeThreshold', thresholds(:), ...
     'triggers', triggers(:), ...
     'noiseAlpha', noiseAlphaTrace(:), ...
-    'gainAlpha', gainAlphaTrace(:));
+    'gainAlpha', gainAlphaTrace(:), ...
+    'meanGain', meanGainTrace(:), ...
+    'meanNoisePsd', meanNoisePsdTrace(:));
 end

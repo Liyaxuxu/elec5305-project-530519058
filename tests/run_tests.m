@@ -19,5 +19,7 @@ for mode = ["fixed", "snr", "change", "oracle"]
     [output, diagnostics] = transition_wiener(dynamicNoisy, fs, mode, transitionTime);
     assert(~isempty(output) && all(isfinite(output)), 'Dynamic Wiener output is invalid.');
     assert(numel(diagnostics.frameTimes) == numel(diagnostics.changeScore));
+    assert(numel(diagnostics.meanGain) == numel(diagnostics.frameTimes));
+    assert(all(isfinite(diagnostics.meanNoisePsd)));
 end
 disp('All speech-enhancement tests passed.');

@@ -3,7 +3,9 @@ results/*.wav
 results/*.mat
 results/*.png
 !results/preliminary_transition_results.png
+!results/real_data_transition_results.png
 src/results/
+results/audio/real_data/
 *.asv
 *.m~
 .DS_Store

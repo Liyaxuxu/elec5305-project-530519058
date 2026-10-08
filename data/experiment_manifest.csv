@@ -1,0 +1,5 @@
+split,speech_source,speech_item,noise_source,noise_item,condition,transition_time_s,snr_before_db,snr_after_db,seed
+development,VoiceBank,p232_003.wav,DEMAND,OOFFICE/ch01.wav,level_change,3.0,10,0,530519058
+development,VoiceBank,p232_003.wav,DEMAND,OOFFICE/ch01.wav to STRAFFIC/ch01.wav,noise_type_change,3.0,0,0,530519058
+development,VoiceBank,p232_003.wav,DEMAND,STRAFFIC/ch01.wav,noise_onset,3.0,quiet,0,530519058
+held_out,VoiceBank,p257_*.wav,DEMAND,non-overlapping excerpts,final_test,TBD,TBD,TBD,TBD

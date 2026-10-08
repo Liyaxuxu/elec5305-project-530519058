@@ -4,75 +4,61 @@
 
 **Liya Xu | SID 530519058 | ELEC5305 Project Feedback Two**
 
-[View the source code and full documentation](https://github.com/Liyaxuxu/elec5305-project-530519058)
+[Source code and full documentation](https://github.com/Liyaxuxu/elec5305-project-530519058)
 
-## Project description
+## Research question
 
-This project investigates what happens immediately after a causal speech enhancer encounters an abrupt acoustic scene change. It asks whether a lightweight modulation/change-aware controller can reduce adaptation delay without creating excessive speech distortion, compared with fixed and SNR-only Wiener baselines.
+Can a lightweight modulation/change-aware controller reduce adaptation delay and speech distortion after an abrupt acoustic change, compared with fixed and SNR-only Wiener baselines?
 
-The main contribution is a transition-aware experiment in which the true noise-change time is known. This allows change detection and enhancement adaptation to be evaluated separately.
+The experiment keeps the causal STFT/Wiener enhancement equation fixed and changes only its controller. A known-time oracle trigger is included to separate two questions: was the scene change detected, and did faster adaptation actually help?
 
-## Achieved to date
+## Work completed for Weeks 1--9
 
-- Implemented controlled SNR mixing and a dynamic noise A to noise B scene generator.
-- Implemented fixed spectral subtraction and a common STFT/Wiener enhancement pipeline.
-- Implemented fixed, SNR-adaptive, change-aware, and oracle-triggered Wiener controllers.
-- Added automated MATLAB tests for mixture SNR, output validity, transition metadata, and every controller mode.
-- Generated machine-readable metrics, a diagnostic figure, and listening examples.
+| Weeks | Activity | Completed evidence |
+|---|---|---|
+| 1--2 | Topic selection | Focused research question, project scope, and four-system comparison. |
+| 3--5 | Literature and data | Focused literature review; official VoiceBank and DEMAND data; checksums and development/held-out split. |
+| 6--9 | Implementation and testing | Three real transition types, four controllers, automated tests, metrics, diagnostic plot, and audio. |
 
-## Preliminary experiment
+The current implementation includes fixed, SNR-adaptive, change-aware, and oracle-triggered Wiener controllers. Spectral subtraction is retained as a basic reference but is not mixed into the controller comparison.
 
-The current dataset-independent demo uses a six-second synthetic speech-like source. At 3.0 seconds, fan-like noise changes to traffic-like noise while the source remains active. The pre- and post-transition mixtures are both approximately 0 dB SNR.
+## Preliminary real-data experiment
 
-![Preliminary transition results](assets/preliminary_transition_results.png)
+Clean VoiceBank speech (`p232_003.wav`) is mixed with DEMAND OOFFICE and STRAFFIC recordings. A known change occurs at 3.0 seconds in each six-second mixture.
 
-| System | Whole-signal SNR (dB) | Transition SI-SDR (dB) |
-|---|---:|---:|
-| Noisy | 0.00 | 0.61 |
-| Fixed Wiener | 1.95 | -2.96 |
-| SNR-adaptive Wiener | 1.08 | -6.96 |
-| Change-aware Wiener | 1.82 | -7.30 |
-| Oracle Wiener | 1.79 | -6.26 |
+1. **Level change:** office noise changes from 10 dB to 0 dB SNR.
+2. **Noise-type change:** office noise changes to traffic noise at 0 dB SNR.
+3. **Noise onset:** traffic noise begins at 0 dB SNR.
 
-The change score located the true scene change within one STFT-frame tolerance, with one earlier false alarm. However, the current fast-adaptation settings increased transition-region speech distortion, including in the oracle case. This suggests that the controller update is currently too aggressive and that knowing the correct transition time alone is not sufficient.
+![Real VoiceBank and DEMAND transition results](assets/real_data_transition_results.png)
 
-This is a useful preliminary negative result rather than a final performance claim. It motivates separate evaluation of:
+| Condition | System | Whole SI-SDR (dB) | Transition SI-SDR (dB) |
+|---|---|---:|---:|
+| Level change | Fixed | 3.10 | 0.59 |
+| Level change | Change-aware | **5.50** | **1.40** |
+| Level change | Oracle | 4.93 | 2.19 |
+| Noise-type change | Fixed | **4.26** | **3.45** |
+| Noise-type change | Change-aware | 4.21 | 3.39 |
+| Noise-type change | Oracle | 4.94 | 3.82 |
+| Noise onset | Fixed | 1.89 | **0.56** |
+| Noise onset | Change-aware | **2.67** | 0.50 |
+| Noise onset | Oracle | 1.81 | 0.44 |
 
-1. whether the environmental change was detected correctly; and
-2. whether changing the Wiener parameters after detection actually helped.
+The change-aware controller helped clearly for the level change, was approximately equal to fixed adaptation for the noise-type change, and did not improve the first 0.75 seconds after noise onset. Detector latency was 0.288 s, 0.440 s, and 1.352 s, respectively. Six false alarms occurred before the true change in every condition.
 
-## Listening examples
+This is a useful preliminary result rather than a final performance claim. It shows that the current detector is too sensitive and that the controller effect depends on the type of scene change. It also confirms the value of the oracle comparison: even a correct trigger can be followed by an adaptation rule that damages speech.
 
-- [Dynamic noisy mixture](assets/audio/dynamic_noisy.wav)
-- [Fixed Wiener output](assets/audio/fixed_wiener.wav)
-- [Change-aware Wiener output](assets/audio/change_aware_wiener.wav)
-- [Oracle-triggered Wiener output](assets/audio/oracle_wiener.wav)
+## Listening example: office to traffic
 
-The signals are synthetic and are provided only to verify the current pipeline. Final conclusions will use real clean speech and environmental noise.
+- [Noisy mixture](assets/audio/real_data/noisy.wav)
+- [Fixed Wiener](assets/audio/real_data/fixed.wav)
+- [SNR-adaptive Wiener](assets/audio/real_data/snr.wav)
+- [Change-aware Wiener](assets/audio/real_data/change.wav)
+- [Oracle-triggered Wiener](assets/audio/real_data/oracle.wav)
+- [Clean reference](assets/audio/real_data/clean.wav)
 
-## Next steps
+## Reproducibility and next work
 
-- Validate the fixed Wiener baseline using clean VoiceBank speech and stationary DEMAND noise.
-- Generate noise-level, noise-type, onset, and offset transitions at known times.
-- Compare transitions during speech with the same transitions during silence.
-- Add spectral-flux and short-time modulation-energy detectors.
-- Measure detection latency, false alarms, settling time, transition SI-SDR/STOI, residual noise, speech distortion, and runtime.
-- Freeze parameters after development and evaluate unseen speakers, noises, and transition pairs.
+The repository contains the exact development manifest, dataset provenance, code, CSV metrics, and automated tests. Speaker `p232` is used for development and `p257` is held out. The final stage will reduce false alarms, add a separate modulation-energy ablation, add offset and speech-pause transitions, freeze the parameters, and evaluate non-overlapping held-out mixtures.
 
-## Reproducibility
-
-The preliminary experiment is generated with a fixed random seed. From the repository root in MATLAB:
-
-```matlab
-addpath('src');
-run('src/run_transition_demo.m');
-```
-
-Tests can be run with:
-
-```matlab
-addpath('src');
-run('tests/run_tests.m');
-```
-
-[Read the full README](https://github.com/Liyaxuxu/elec5305-project-530519058#readme)
+[Read the full README](https://github.com/Liyaxuxu/elec5305-project-530519058#readme) | [Read the literature review](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/literature_review.md) | [View dataset provenance](https://github.com/Liyaxuxu/elec5305-project-530519058/tree/main/data)
