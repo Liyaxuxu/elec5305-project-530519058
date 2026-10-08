@@ -1,5 +1,11 @@
-split,speech_source,speech_item,noise_source,noise_item,condition,transition_time_s,snr_before_db,snr_after_db,seed
-development,VoiceBank,p232_003.wav,DEMAND,OOFFICE/ch01.wav,level_change,3.0,10,0,530519058
-development,VoiceBank,p232_003.wav,DEMAND,OOFFICE/ch01.wav to STRAFFIC/ch01.wav,noise_type_change,3.0,0,0,530519058
-development,VoiceBank,p232_003.wav,DEMAND,STRAFFIC/ch01.wav,noise_onset,3.0,quiet,0,530519058
-held_out,VoiceBank,p257_*.wav,DEMAND,non-overlapping excerpts,final_test,TBD,TBD,TBD,TBD
+split,speech_source,speaker,replicates,noise_source,noise_excerpt_start_s,condition,transition_time_s,snr_before_db,snr_after_db,seed
+development,VoiceBank,p232,3,DEMAND OOFFICE,7/27/47,level_active,3.0,10,0,530519058
+development,VoiceBank,p232,3,DEMAND OOFFICE to STRAFFIC,7/27/47,type_active,3.0,0,0,530519058
+development,VoiceBank,p232,3,DEMAND STRAFFIC,7/27/47,onset_active,3.0,quiet,0,530519058
+development,VoiceBank,p232,3,DEMAND STRAFFIC,7/27/47,offset_active,3.0,0,quiet,530519058
+development,VoiceBank,p232,3,DEMAND OOFFICE to STRAFFIC,7/27/47,type_pause,3.0,0,0,530519058
+held_out,VoiceBank,p257,3,DEMAND OOFFICE,127/147/167,level_active,3.0,10,0,530519058
+held_out,VoiceBank,p257,3,DEMAND OOFFICE to STRAFFIC,127/147/167,type_active,3.0,0,0,530519058
+held_out,VoiceBank,p257,3,DEMAND STRAFFIC,127/147/167,onset_active,3.0,quiet,0,530519058
+held_out,VoiceBank,p257,3,DEMAND STRAFFIC,127/147/167,offset_active,3.0,0,quiet,530519058
+held_out,VoiceBank,p257,3,DEMAND OOFFICE to STRAFFIC,127/147/167,type_pause,3.0,0,0,530519058

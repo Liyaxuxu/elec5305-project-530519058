@@ -21,5 +21,16 @@ for mode = ["fixed", "snr", "change", "oracle"]
     assert(numel(diagnostics.frameTimes) == numel(diagnostics.changeScore));
     assert(numel(diagnostics.meanGain) == numel(diagnostics.frameTimes));
     assert(all(isfinite(diagnostics.meanNoisePsd)));
+    assert(all(size(diagnostics.gainMatrix) > 0));
+    separated = apply_stft_gain(clean, fs, diagnostics.gainMatrix);
+    assert(~isempty(separated) && all(isfinite(separated)));
+end
+window = hamming(512, 'periodic');
+[S, ~, frameTimes] = stft(dynamicNoisy, fs, Window=window, ...
+    OverlapLength=384, FFTLength=512);
+for cue = ["log_spectrum", "spectral_flux", "modulation", "combined"]
+    detector = scene_change_detector(S, frameTimes, cue);
+    assert(numel(detector.score) == size(S, 2));
+    assert(all(isfinite(detector.score)));
 end
 disp('All speech-enhancement tests passed.');

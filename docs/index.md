@@ -2,63 +2,76 @@
 
 ## Modulation-Aware Speech Enhancement in Dynamic Acoustic Scenes
 
-**Liya Xu | SID 530519058 | ELEC5305 Project Feedback Two**
+**Liya Xu | SID 530519058 | ELEC5305 Project**
 
-[Source code and full documentation](https://github.com/Liyaxuxu/elec5305-project-530519058)
+[Source code and complete results](https://github.com/Liyaxuxu/elec5305-project-530519058)
 
 ## Research question
 
 Can a lightweight modulation/change-aware controller reduce adaptation delay and speech distortion after an abrupt acoustic change, compared with fixed and SNR-only Wiener baselines?
 
-The experiment keeps the causal STFT/Wiener enhancement equation fixed and changes only its controller. A known-time oracle trigger is included to separate two questions: was the scene change detected, and did faster adaptation actually help?
+All systems use the same causal STFT/Wiener enhancement equation. Only the controller changes. The known-time oracle is a diagnostic system that separates change-detection failure from controller failure.
 
-## Work completed for Weeks 1--9
+## Experiment completed
 
-| Weeks | Activity | Completed evidence |
-|---|---|---|
-| 1--2 | Topic selection | Focused research question, project scope, and four-system comparison. |
-| 3--5 | Literature and data | Focused literature review; official VoiceBank and DEMAND data; checksums and development/held-out split. |
-| 6--9 | Implementation and testing | Three real transition types, four controllers, automated tests, metrics, diagnostic plot, and audio. |
+Clean VoiceBank speech is mixed with DEMAND OOFFICE and STRAFFIC recordings. Speaker `p232` is used for development and `p257` is held out. Three speech sequences and non-overlapping noise excerpts are used in each split.
 
-The current implementation includes fixed, SNR-adaptive, change-aware, and oracle-triggered Wiener controllers. Spectral subtraction is retained as a basic reference but is not mixed into the controller comparison.
+Five controlled conditions occur at 3.0 seconds:
 
-## Preliminary real-data experiment
+1. Office noise changes from 10 dB to 0 dB SNR.
+2. Office noise changes to traffic noise during active speech.
+3. Traffic noise begins during active speech.
+4. Traffic noise disappears during active speech.
+5. Office noise changes to traffic noise during a controlled speech pause.
 
-Clean VoiceBank speech (`p232_003.wav`) is mixed with DEMAND OOFFICE and STRAFFIC recordings. A known change occurs at 3.0 seconds in each six-second mixture.
+Four controllers are compared: fixed, SNR-adaptive, change-aware, and oracle-triggered Wiener. The same mixtures are also used to compare log-spectrum difference, spectral flux, short-time modulation, and a combined change cue.
 
-1. **Level change:** office noise changes from 10 dB to 0 dB SNR.
-2. **Noise-type change:** office noise changes to traffic noise at 0 dB SNR.
-3. **Noise onset:** traffic noise begins at 0 dB SNR.
+## Held-out enhancement results
 
-![Real VoiceBank and DEMAND transition results](assets/real_data_transition_results.png)
+![Held-out transition metrics](assets/held_out_transition_metrics.png)
 
-| Condition | System | Whole SI-SDR (dB) | Transition SI-SDR (dB) |
-|---|---|---:|---:|
-| Level change | Fixed | 3.10 | 0.59 |
-| Level change | Change-aware | **5.50** | **1.40** |
-| Level change | Oracle | 4.93 | 2.19 |
-| Noise-type change | Fixed | **4.26** | **3.45** |
-| Noise-type change | Change-aware | 4.21 | 3.39 |
-| Noise-type change | Oracle | 4.94 | 3.82 |
-| Noise onset | Fixed | 1.89 | **0.56** |
-| Noise onset | Change-aware | **2.67** | 0.50 |
-| Noise onset | Oracle | 1.81 | 0.44 |
+Mean SI-SDR in the first 0.75 seconds after each change:
 
-The change-aware controller helped clearly for the level change, was approximately equal to fixed adaptation for the noise-type change, and did not improve the first 0.75 seconds after noise onset. Detector latency was 0.288 s, 0.440 s, and 1.352 s, respectively. Six false alarms occurred before the true change in every condition.
+| Condition | Fixed | SNR-adaptive | Change-aware | Oracle |
+|---|---:|---:|---:|---:|
+| Level change | 1.76 | 2.98 | **3.95** | 3.40 |
+| Noise offset | 13.95 | 14.58 | **20.61** | 15.68 |
+| Noise onset | 3.08 | 4.07 | **4.21** | 3.73 |
+| Type change during speech | 5.93 | 6.75 | 7.20 | **7.36** |
+| Type change during pause | 2.52 | 4.34 | **4.82** | 4.16 |
 
-This is a useful preliminary result rather than a final performance claim. It shows that the current detector is too sensitive and that the controller effect depends on the type of scene change. It also confirms the value of the oracle comparison: even a correct trigger can be followed by an adaptation rule that damages speech.
+Across the five held-out conditions, change-aware processing obtained 4.22 dB mean whole-signal SI-SDR, compared with 2.49 dB for fixed Wiener. Mean STOI was approximately 0.93 for change-aware and 0.92 for fixed, while the unprocessed mixtures were approximately 0.94. The SI-SDR improvement therefore does not yet establish an intelligibility improvement.
 
-## Listening example: office to traffic
+## Detector result
 
-- [Noisy mixture](assets/audio/real_data/noisy.wav)
-- [Fixed Wiener](assets/audio/real_data/fixed.wav)
-- [SNR-adaptive Wiener](assets/audio/real_data/snr.wav)
-- [Change-aware Wiener](assets/audio/real_data/change.wav)
-- [Oracle-triggered Wiener](assets/audio/real_data/oracle.wav)
-- [Clean reference](assets/audio/real_data/clean.wav)
+![Detector ablation](assets/detector_ablation.png)
 
-## Reproducibility and next work
+The combined cue was selected using development data and frozen before held-out evaluation. It detected 60% of held-out changes within 1.5 seconds. Detected cases had 0.79 seconds mean latency, and there were 3.27 false alarms before each true transition.
 
-The repository contains the exact development manifest, dataset provenance, code, CSV metrics, and automated tests. Speaker `p232` is used for development and `p257` is held out. The final stage will reduce false alarms, add a separate modulation-energy ablation, add offset and speech-pause transitions, freeze the parameters, and evaluate non-overlapping held-out mixtures.
+This is the current limitation. Spectral flux rarely produced a false alarm but missed all changes at the current threshold. The modulation cue reduced false alarms but did not outperform the combined cue under the development selection rule.
 
-[Read the full README](https://github.com/Liyaxuxu/elec5305-project-530519058#readme) | [Read the literature review](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/literature_review.md) | [View dataset provenance](https://github.com/Liyaxuxu/elec5305-project-530519058/tree/main/data)
+## Transition analysis
+
+![Controller trace](assets/held_out_controller_trace.png)
+
+The figure shows a held-out office-to-traffic example, including the true transition, detected triggers, mean Wiener gain, and noise-estimator update coefficient. It demonstrates why detector accuracy and controller behaviour must be reported separately.
+
+![Transition recovery](assets/transition_recovery.png)
+
+The recovery curve aligns held-out office-to-traffic cases at the known change time and reports local SI-SDR every 100 ms.
+
+![Speech and noise trade-off](assets/speech_noise_tradeoff.png)
+
+The saved Wiener gain is also applied separately to clean speech and added noise. This measures the central trade-off directly: reducing residual noise versus introducing speech distortion.
+
+## Interpretation
+
+The change-aware controller improves SI-SDR in the current held-out experiment, particularly for level changes and noise offset. However, the detector remains unreliable and STOI does not show the same improvement. The project therefore does not claim that the proposed controller is universally better.
+
+The next priority is to improve detection using development data only, then repeat held-out evaluation with more speakers, noise environments, transition pairs, and random seeds. DeepFilterNet3 remains an optional modern reference after the DSP analysis is stable.
+
+## Reproducibility
+
+The repository provides the dataset manifest, source code, per-case CSV files, summary tables, automated tests, figures, and audio examples. Raw third-party datasets are not committed.
+
+[Full README](https://github.com/Liyaxuxu/elec5305-project-530519058#readme) | [Literature review](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/literature_review.md) | [Dataset provenance](https://github.com/Liyaxuxu/elec5305-project-530519058/tree/main/data)

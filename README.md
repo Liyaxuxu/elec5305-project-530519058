@@ -29,8 +29,9 @@ A second question is whether whole-utterance metrics hide short but important fa
 | Change-aware Wiener controller | Preliminary | Uses a log-spectral change score, adaptive threshold, and hold time. |
 | Oracle change-triggered Wiener | Complete | Uses the known simulated transition time as a diagnostic upper bound. |
 | Automated tests | Complete | Mixing, output validity, scene metadata, and all controller modes pass. |
-| Real VoiceBank/DEMAND evaluation | Preliminary | Level, noise-type, and noise-onset transitions are implemented; final held-out evaluation is not yet complete. |
-| Modulation/change cue | Preliminary | The current cue measures short-time log-spectral change; a separate modulation-energy ablation remains planned. |
+| Real VoiceBank/DEMAND evaluation | Expanded preliminary | Five conditions, three repetitions, separate development/held-out speakers, and non-overlapping noise excerpts. |
+| Change-cue ablation | Complete for current data | Log-spectrum, spectral flux, short-time modulation, and combined cues evaluated independently. |
+| Transition diagnostics | Complete for current data | STOI, SI-SDR, settling time, steady-state score, speech error, residual-noise suppression, and runtime. |
 
 ## Weeks 1--9 checkpoint
 
@@ -71,29 +72,33 @@ Clean speech + noise A + noise B + known transition time
 
 All four main systems use the same Wiener enhancement equation. Only the controller changes. This makes it possible to separate the effect of change detection from the effect of faster noise tracking and weaker gain smoothing.
 
-## Preliminary real-data results
+## Expanded real-data results
 
-The first real-data run uses six seconds of clean VoiceBank speech (`p232_003.wav`) and channel 1 from the DEMAND OOFFICE and STRAFFIC recordings. A known change is introduced at 3.0 seconds. The three development conditions are a 10 dB to 0 dB level change, an office-to-traffic noise-type change at 0 dB, and a traffic-noise onset at 0 dB.
+The expanded study uses VoiceBank speaker `p232` for development and held-out speaker `p257` for testing. Each split contains three speech sequences and non-overlapping DEMAND excerpts. Five conditions are tested: level change, noise-type change, onset, offset, and the same noise-type change during a controlled speech pause. Every change occurs at 3.0 seconds.
 
-![Preliminary real-data transition result](results/real_data_transition_results.png)
+![Held-out transition metrics](results/held_out_transition_metrics.png)
 
-| Condition | System | Whole SI-SDR (dB) | First 0.75 s SI-SDR (dB) |
-|---|---|---:|---:|
-| Level change | Fixed | 3.10 | 0.59 |
-| Level change | Change-aware | **5.50** | **1.40** |
-| Level change | Oracle | 4.93 | 2.19 |
-| Noise-type change | Fixed | **4.26** | **3.45** |
-| Noise-type change | Change-aware | 4.21 | 3.39 |
-| Noise-type change | Oracle | 4.94 | 3.82 |
-| Noise onset | Fixed | 1.89 | **0.56** |
-| Noise onset | Change-aware | **2.67** | 0.50 |
-| Noise onset | Oracle | 1.81 | 0.44 |
+| Held-out condition | Fixed | SNR-adaptive | Change-aware | Oracle |
+|---|---:|---:|---:|---:|
+| Level change | 1.76 | 2.98 | **3.95** | 3.40 |
+| Noise offset | 13.95 | 14.58 | **20.61** | 15.68 |
+| Noise onset | 3.08 | 4.07 | **4.21** | 3.73 |
+| Noise-type change during speech | 5.93 | 6.75 | 7.20 | **7.36** |
+| Noise-type change during pause | 2.52 | 4.34 | **4.82** | 4.16 |
 
-The preliminary controller helped most for the noise-level change. For the office-to-traffic transition it was approximately equal to the fixed baseline, and at noise onset its global advantage did not carry into the first 0.75 seconds. The detector latency was 0.288 s, 0.440 s, and 1.352 s for the three conditions, with six pre-transition false alarms in each case. This means the present detector is too sensitive and too slow for onset detection.
+Values are mean SI-SDR in the first 0.75 seconds after the change, in dB. Across all held-out conditions, change-aware processing achieved 4.22 dB whole-signal SI-SDR compared with 2.49 dB for fixed Wiener. However, mean STOI was approximately 0.93 for change-aware and 0.92 for fixed, while the unprocessed mixtures were approximately 0.94. The current controller therefore improves distortion-based measures but does not yet demonstrate an intelligibility improvement.
 
-These are development results from one utterance, not final claims. The oracle result also shows that a correct trigger does not guarantee an improvement: the fast-update rule itself must be tuned without increasing speech leakage into the noise estimate. Full-utterance and transition metrics, detector results, settling-time values, and runtime are available in [`results/real_data_metrics.csv`](results/real_data_metrics.csv) and [`results/real_data_detection_summary.csv`](results/real_data_detection_summary.csv).
+### Detector ablation
 
-The earlier synthetic experiment remains available as a pipeline smoke test in [`results/preliminary_metrics.csv`](results/preliminary_metrics.csv). It is not used as the main evidence.
+![Detector ablation](results/detector_ablation.png)
+
+The combined cue was selected using development data and then frozen. On the held-out cases it detected 60% of changes within 1.5 seconds, with 0.79 seconds mean latency among detected cases and 3.27 false alarms before each change. The detector is therefore still the main weakness. Spectral flux produced few false alarms but missed all transitions at the current threshold; modulation reduced false alarms relative to the combined cue but was not selected by the predefined development cost.
+
+### Transition diagnostics
+
+![Held-out controller trace](results/held_out_controller_trace.png)
+
+The study now saves the Wiener gain and applies it separately to clean speech and added noise. This allows transition speech error and residual-noise suppression to be measured independently. The recovery curve, speech/noise trade-off, complete per-case metrics, and summaries are available in [`results/`](results/). These are still preliminary results: only two speakers and two noise environments are included.
 
 ## Compared systems
 
@@ -109,9 +114,10 @@ Clean VoiceBank speech is mixed with selected DEMAND noises to create controlled
 
 - a noise-level change;
 - a noise-type change at the same nominal SNR;
-- a noise-onset condition.
+- noise onset and noise disappearance;
+- the same noise-type transition during active speech and a controlled pause.
 
-Noise disappearance and matched changes during speech pauses remain final-project extensions. Development uses speaker `p232`; speaker `p257`, non-overlapping noise excerpts, and held-out transition pairs are reserved for final evaluation. The exact preliminary inputs are listed in [`data/experiment_manifest.csv`](data/experiment_manifest.csv).
+Development uses speaker `p232`; held-out evaluation uses speaker `p257` and non-overlapping noise excerpts. Detector selection is performed only on development cases. The exact inputs are listed in [`data/experiment_manifest.csv`](data/experiment_manifest.csv).
 
 The planned metrics are detection latency, false-alarm rate, transition settling time, transition-region SI-SDR or segmental SNR, STOI, residual-noise suppression, speech distortion, and processing time.
 
@@ -126,7 +132,7 @@ After downloading the official data described in [`data/README.md`](data/README.
 
 ```matlab
 addpath('src');
-run('src/run_real_data_experiment.m');
+run('src/run_full_transition_study.m');
 ```
 
 The dataset-independent smoke test is:
@@ -150,6 +156,9 @@ run('tests/run_tests.m');
 |-- src/
 |   |-- generate_dynamic_scene.m   Known-time noise transition generator
 |   |-- transition_wiener.m        Four Wiener controller modes
+|   |-- scene_change_detector.m    Four independently evaluated change cues
+|   |-- apply_stft_gain.m          Speech/noise decomposition analysis
+|   |-- run_full_transition_study.m Development and held-out study
 |   |-- run_transition_demo.m      Reproducible preliminary experiment
 |   |-- run_real_data_experiment.m VoiceBank + DEMAND transition experiment
 |   |-- spectral_subtraction.m     Basic fixed baseline
@@ -165,12 +174,11 @@ run('tests/run_tests.m');
 
 ## Next milestones
 
-1. Validate the fixed Wiener implementation on real speech and stationary noise.
-2. Add level, type, onset, and offset transitions using VoiceBank and DEMAND.
-3. Evaluate spectral flux and short-time modulation energy as separate detectors.
-4. Separate detector accuracy from controller benefit using the oracle system.
-5. Tune only on development transitions, then freeze parameters for held-out testing.
-6. Add a pretrained DeepFilterNet3 comparison only if the core DSP study is complete.
+1. Improve change detection without increasing false alarms, using development data only.
+2. Add more speakers, noise environments, transition pairs, and random seeds.
+3. Validate the fixed Wiener implementation against an independent reference.
+4. Repeat held-out testing with confidence intervals or statistical tests.
+5. Add pretrained DeepFilterNet3 only as an optional modern reference.
 
 ## Selected references
 
