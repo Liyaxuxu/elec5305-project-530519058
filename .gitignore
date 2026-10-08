@@ -2,6 +2,8 @@ data/raw/
 results/*.wav
 results/*.mat
 results/*.png
+!results/preliminary_transition_results.png
+src/results/
 *.asv
 *.m~
 .DS_Store
