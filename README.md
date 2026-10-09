@@ -6,9 +6,23 @@
 
 **Student:** Liya Xu | **SID:** 530519058 | **GitHub:** [Liyaxuxu](https://github.com/Liyaxuxu)
 
-## Latest: false-alarm audit
+## Latest: noise-presence guard follow-up
 
-The latest experiment adds no-change controls, a persistent noise-floor cue, a speech-related threshold, causal startup checks, and frozen validation on unused speech/noise excerpts. It contains 48 development and 48 validation cases. The revised detector is an experimental option; the default controller is preserved.
+A new frozen follow-up tested whether a causal background-noise occupancy gate could reject speech-only false alarms and whether a milder controller response would improve the complete enhancer. It used 48 development cases for selection and 48 fresh-excerpt confirmation cases that were not used for tuning.
+
+| Confirmation result | Unguarded / fixed reference | Guarded and tuned |
+|---|---:|---:|
+| Detector hit rate | 0.700 | 0.567 |
+| No-change false alarms/min | 46.19 | 28.10 |
+| Whole-signal SI-SDR (dB) | 3.401 fixed | 3.481 |
+| Transition SI-SDR (dB) | 4.285 fixed | 4.177 |
+| STOI | 0.85744 fixed | 0.85750 |
+
+**The simple gate is not accepted as an overall improvement.** It reduced confirmation false alarms by 39.2%, including a reduction on clean speech, but missed four additional scheduled changes. The tuned complete system gained only 0.080 dB whole-signal SI-SDR, lost 0.108 dB transition SI-SDR, and left STOI effectively unchanged. This negative result shows that onset, offset and stationary controls need different directional logic rather than one persistent-noise rule. See the [full follow-up, frozen protocol, condition results and uncertainty analysis](results/noise_guard_study/README.md).
+
+## Previous: false-alarm audit
+
+The previous experiment adds no-change controls, a persistent noise-floor cue, a speech-related threshold, causal startup checks, and frozen validation on unused speech/noise excerpts. It contains 48 development and 48 validation cases. The revised detector is an experimental option; the default controller is preserved.
 
 | Validation result | Original combined | Revised |
 |---|---:|---:|
@@ -41,7 +55,7 @@ A second question is whether whole-utterance metrics hide short but important fa
 | Fixed spectral subtraction | Complete | Retained as a basic ELEC5305 baseline. |
 | Fixed Wiener enhancer | Complete | Uses one common STFT/Wiener pipeline. |
 | SNR-adaptive Wiener controller | Preliminary | Changes PSD-update and gain-smoothing rates using estimated frame SNR. |
-| Change-aware Wiener controller | Preliminary | Uses a log-spectral change score, adaptive threshold, and hold time. |
+| Change-aware Wiener controller | Preliminary | Two frozen detector revisions reduce false alarms but do not yet improve the complete system consistently. |
 | Oracle change-triggered Wiener | Complete | Uses the known simulated transition time as a diagnostic reference, not a guaranteed quality upper bound. |
 | Automated tests | Complete | Mixing, output validity, scene metadata, and all controller modes pass. |
 | Real VoiceBank/DEMAND evaluation | Expanded preliminary | Five conditions, three repetitions, separate development/held-out speakers, and non-overlapping noise excerpts. |
@@ -189,7 +203,7 @@ run('tests/run_tests.m');
 
 ## Next milestones
 
-1. Improve change detection without increasing false alarms, using development data only.
+1. Replace the rejected single occupancy gate with separate onset, offset and stationary-noise states, using development data only.
 2. Add more speakers, noise environments, transition pairs, and random seeds.
 3. Validate the fixed Wiener implementation against an independent reference.
 4. Repeat held-out testing with confidence intervals or statistical tests.

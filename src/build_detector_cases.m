@@ -4,9 +4,12 @@ fs = 16000; duration = 8; n = duration*fs;
 folder = fullfile(repoRoot, 'data', 'raw');
 if split == "development"
     speaker = "p232"; firstFile = 30; noiseStart = 70;
-else
-    assert(split == "validation");
+elseif split == "validation"
     speaker = "p257"; firstFile = 90; noiseStart = 200;
+else
+    assert(split == "confirmation");
+    % Fresh excerpts reserved until the guard and controller are frozen.
+    speaker = "p257"; firstFile = 200; noiseStart = 130;
 end
 files = dir(fullfile(folder, 'clean_testset_wav', speaker+"_*.wav"));
 [~, order] = sort({files.name}); files = files(order);

@@ -7,11 +7,14 @@ noise = 0.03*randn(n,1); noisy = clean+noise;
 window = hamming(512,'periodic');
 [S,~,t] = stft(noisy,fs,Window=window,OverlapLength=384,FFTLength=512);
 features = robust_change_features(S,t);
+assert(numel(features.noiseOccupancyDb)==numel(t));
 future = noisy; future(time>=2.5) = 10*randn(sum(time>=2.5),1);
 [S2,~,t2] = stft(future,fs,Window=window,OverlapLength=384,FFTLength=512);
 features2 = robust_change_features(S2,t2);
 safe = t+0.016 < 2.5;
 assert(max(abs(features.floorScore(safe)-features2.floorScore(safe)))<1e-10);
+assert(max(abs(features.noiseOccupancyDb(safe)- ...
+    features2.noiseOccupancyDb(safe)))<1e-10);
 for family = ["floor","legacy"]
     config = struct('family',family,'threshold',6, ...
         'persistenceFrames',4,'speechWeight',0.75);
@@ -20,6 +23,11 @@ for family = ["floor","legacy"]
     assert(isequal(d1.triggers(safe),d2.triggers(safe)), ...
         'Future audio changed a past trigger.');
 end
+guarded = struct('family',"floor",'threshold',6, ...
+    'persistenceFrames',4,'speechWeight',0.75, ...
+    'noiseOccupancyThresholdDb',-8);
+d = trigger_change_features(features,guarded);
+assert(isfield(d,'noisePresent') && numel(d.noisePresent)==numel(t));
 options = struct('causalStartup',true);
 for mode = ["fixed","snr","change","oracle"]
     [y,d] = transition_wiener(noisy,fs,mode,2.0,"combined",options);
@@ -29,6 +37,11 @@ for mode = ["fixed","snr","change","oracle"]
         apply_stft_gain(noise,fs,d.gainMatrix);
     assert(norm(y-decomposition)/norm(y)<1e-9);
 end
+custom = options; custom.fastNoiseAlpha = 0.96;
+custom.fastGainAlpha = 0.75; custom.fastHoldSeconds = 0.20;
+[~,d] = transition_wiener(noisy,fs,"oracle",2.0,"combined",custom);
+assert(any(abs(d.noiseAlpha-0.96)<1e-12));
+assert(any(abs(d.gainAlpha-0.75)<1e-12));
 % Stronger causality test inside the original 250 ms initialization interval.
 future = noisy; future(time>=0.15) = 2*randn(sum(time>=0.15),1);
 [~,a] = transition_wiener(noisy,fs,"fixed",NaN,"combined",options);

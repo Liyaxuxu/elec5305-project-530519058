@@ -10,7 +10,11 @@ end
 % This is a heuristic speech proxy, not a trained or reference-label VAD.
 threshold = config.threshold + config.speechWeight * ...
     max(features.speechExcessDb-6, 0);
-above = score > threshold & t >= features.warmupSeconds;
+if ~isfield(config, 'noiseOccupancyThresholdDb')
+    config.noiseOccupancyThresholdDb = -Inf;
+end
+noisePresent = features.noiseOccupancyDb >= config.noiseOccupancyThresholdDb;
+above = score > threshold & noisePresent & t >= features.warmupSeconds;
 triggers = false(size(t));
 consecutive = 0;
 holdRemaining = 0;
@@ -28,5 +32,8 @@ for k = 1:numel(t)
     end
 end
 detector = struct('frameTimes', t, 'score', score, 'threshold', threshold, ...
-    'triggers', triggers, 'speechExcessDb', features.speechExcessDb);
+    'triggers', triggers, 'speechExcessDb', features.speechExcessDb, ...
+    'noiseOccupancyDb', features.noiseOccupancyDb, ...
+    'noisePresent', noisePresent, ...
+    'noiseOccupancyThresholdDb', config.noiseOccupancyThresholdDb);
 end
