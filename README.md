@@ -72,6 +72,18 @@ A second question is whether whole-utterance metrics hide short but important fa
 
 This checkpoint means the scheduled work has been attempted and documented. It does not mean that the final held-out experiment or controller tuning is complete.
 
+## Feedback-driven updates and code map
+
+The table below shows what changed after the first project feedback and where each part can be checked. A fuller response, including preliminary results and current limitations, is available in the [Project Feedback Two checkpoint](docs/feedback-two.md).
+
+| Update completed | Main code and evidence |
+|---|---|
+| Built one common Wiener pipeline with fixed, SNR-adaptive, change-aware, and oracle controller modes; kept spectral subtraction as a separate baseline. | [`src/transition_wiener.m`](src/transition_wiener.m), [`src/spectral_subtraction.m`](src/spectral_subtraction.m) |
+| Added controlled SNR mixing, dynamic noise scenes, reproducible cases, and exact transition metadata. | [`src/add_noise_at_snr.m`](src/add_noise_at_snr.m), [`src/generate_dynamic_scene.m`](src/generate_dynamic_scene.m), [`src/build_detector_cases.m`](src/build_detector_cases.m) |
+| Evaluated the original change cues and implemented the revised causal detector and event scoring. | [`src/scene_change_detector.m`](src/scene_change_detector.m), [`src/robust_change_features.m`](src/robust_change_features.m), [`src/trigger_change_features.m`](src/trigger_change_features.m), [`src/score_change_events.m`](src/score_change_events.m) |
+| Added development and frozen-validation studies, summary tables, and separate speech/noise decomposition. | [`src/run_full_transition_study.m`](src/run_full_transition_study.m), [`src/run_detector_revision.m`](src/run_detector_revision.m), [`src/summarise_detector_revision.m`](src/summarise_detector_revision.m), [`src/apply_stft_gain.m`](src/apply_stft_gain.m) |
+| Added automated checks, a documented detector audit, and one executed MATLAB walkthrough of the complete project. | [`tests/run_tests.m`](tests/run_tests.m), [`tests/test_detector_revision.m`](tests/test_detector_revision.m), [`results/detector_revision/README.md`](results/detector_revision/README.md), [`ELEC5305_Project_Summary.mlx`](ELEC5305_Project_Summary.mlx) |
+
 ## Experimental structure
 
 ```text

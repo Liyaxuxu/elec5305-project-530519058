@@ -37,9 +37,6 @@
   {\large\bfseries\color{accent} #1}\par
   \vspace{0.1em}%
 }
-\newcommand{\codefile}[1]{%
-  \href{https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/#1}{\path{#1}}%
-}
 
 \begin{document}
 
@@ -101,32 +98,9 @@ Thresholds and controller settings will be selected on development data and froz
 
 \projectsection{Preliminary Progress and Expected Outcomes}
 
-The scene generator, enhancement systems, detector ablations, tests, figures, and listening examples are implemented. On frozen validation, the revised cue detected 23 of 30 changes instead of 20, reduced false alarms from 62.38 to 41.90 per minute, and reduced latency from 0.617 to 0.175 seconds. SI-SDR and STOI did not improve, so this is a detector-level improvement, not yet an improved complete enhancer.
+The dynamic-scene generator, five enhancement baselines, detector ablations, automated tests, transition metrics, figures, and listening examples have been implemented. In the latest frozen detector audit, the revised cue detected 23 of 30 scheduled validation changes, compared with 20 of 30 for the earlier combined cue. No-change false alarms fell from 62.38 to 41.90 per minute and matched latency fell from 0.617 to 0.175 seconds. However, whole-signal SI-SDR and STOI did not improve, and clean-speech-only false alarms remained a serious weakness. These results separate a detector improvement from an improvement to the complete enhancer and motivate further controller analysis.
 
-\projectsection{Feedback-Driven Updates and Code Map}
-
-The table links each feedback-driven change to its repository files.
-
-{\footnotesize
-\renewcommand{\arraystretch}{1.12}
-\begin{tabularx}{\textwidth}{|p{5.2cm}|X|}
-\hline
-\textbf{Update completed} & \textbf{Code and evidence} \\
-\hline
-Common Wiener pipeline, four controller modes, and separate spectral-subtraction baseline. & \codefile{src/transition_wiener.m}; \codefile{src/spectral_subtraction.m} \\
-\hline
-Controlled scenes, SNR mixing, case construction, and exact metadata. & \codefile{src/generate_dynamic_scene.m}; \codefile{src/add_noise_at_snr.m}; \codefile{src/build_detector_cases.m} \\
-\hline
-Original cue ablations and revised causal detector/event scoring. & \codefile{src/scene_change_detector.m}; \codefile{src/robust_change_features.m}; \codefile{src/trigger_change_features.m}; \codefile{src/score_change_events.m} \\
-\hline
-Development/frozen-validation experiments, summaries, and speech/noise decomposition. & \codefile{src/run_full_transition_study.m}; \codefile{src/run_detector_revision.m}; \codefile{src/summarise_detector_revision.m}; \codefile{src/apply_stft_gain.m} \\
-\hline
-Automated checks, complete audit, and executed project walkthrough. & \codefile{tests/run_tests.m}; \codefile{tests/test_detector_revision.m}; \codefile{results/detector_revision/README.md}; \codefile{ELEC5305_Project_Summary.mlx} \\
-\hline
-\end{tabularx}
-}
-
-The final deliverable will be a reproducible study with code, tests, results, figures, and audio. It will report adaptation delay, residual noise, and speech distortion without claiming state-of-the-art performance.
+The final deliverable will be a reproducible dynamic speech-enhancement auditor containing MATLAB code, exact mixture metadata, tests, per-case results, transition-centred figures, and audio examples. A useful outcome may be either a repeatable improvement or a clear negative result showing when simple modulation cues fail. The main contribution is a transparent account of adaptation delay, residual noise, and speech distortion rather than a claim of state-of-the-art average quality.
 
 \projectsection{Timeline}
 
