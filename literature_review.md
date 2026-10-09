@@ -44,7 +44,7 @@ The literature suggests that the strongest course-scale contribution is not to c
 2. P. Scalart and J. V. Filho, "Speech Enhancement Based on a Priori Signal to Noise Estimation," *ICASSP*, 1996. https://doi.org/10.1109/ICASSP.1996.543199
 3. P. C. Loizou and G. Kim, "Reasons Why Current Speech-Enhancement Algorithms Do Not Improve Speech Intelligibility and Suggested Solutions," *IEEE TASLP*, 2011. https://doi.org/10.1109/TASL.2010.2045180
 4. K. K. Paliwal, B. Schwerin, and K. Wojcicki, "Modulation Domain Spectral Subtraction for Speech Enhancement," *Interspeech*, 2009. https://doi.org/10.21437/Interspeech.2009-413
-5. H. Schroter et al., "DeepFilterNet: Perceptually Motivated Real-Time Speech Enhancement," *Interspeech*, 2023. https://doi.org/10.21437/Interspeech.2023-120
+5. H. Schroter et al., "DeepFilterNet: Perceptually Motivated Real-Time Speech Enhancement," *Interspeech*, pp. 2008-2009, 2023. https://www.isca-archive.org/interspeech_2023/schroter23b_interspeech.html
 6. H. Wu and S. Braun, "Ultra-Low Latency Speech Enhancement: A Comprehensive Study," *ICASSP*, 2025. https://doi.org/10.1109/ICASSP49660.2025.10889823
 7. Y. Kim and Y. Chung, "Latency-Configurable Streaming Speech Enhancement via Asymmetric Temporal Padding," arXiv:2606.19688, 2026. https://arxiv.org/abs/2606.19688
 8. L. Cheng and S.-C. Liu, "Towards Lightweight Adaptation of Speech Enhancement Models in Real-World Environments," arXiv:2603.07471, 2026. https://arxiv.org/abs/2603.07471
