@@ -6,6 +6,8 @@
 
 [Source code and complete results](https://github.com/Liyaxuxu/elec5305-project-530519058)
 
+[Updated project proposal (LaTeX source)](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/ELEC5305_Updated_Project_Proposal.tex)
+
 ## Latest: testing false alarms
 
 The latest study compares the original detector with a persistent noise-floor cue and a speech-related threshold. It uses 48 development cases and 48 new validation cases, including 18 no-change controls in each split. Parameters were selected on development data and frozen before validation.

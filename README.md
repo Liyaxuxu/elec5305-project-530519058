@@ -6,6 +6,8 @@
 
 **Student:** Liya Xu | **SID:** 530519058 | **GitHub:** [Liyaxuxu](https://github.com/Liyaxuxu)
 
+**Updated proposal:** [`ELEC5305_Updated_Project_Proposal.tex`](ELEC5305_Updated_Project_Proposal.tex) incorporates the teaching feedback and current preliminary evidence. The originally submitted [`proposal.pdf`](proposal.pdf) is retained unchanged.
+
 ## Latest: false-alarm audit
 
 The latest experiment adds no-change controls, a persistent noise-floor cue, a speech-related threshold, causal startup checks, and frozen validation on unused speech/noise excerpts. It contains 48 development and 48 validation cases. The revised detector is an experimental option; the default controller is preserved.
@@ -183,7 +185,8 @@ run('tests/run_tests.m');
 |-- docs/index.md                   GitHub Pages progress report
 |-- data/                           Dataset provenance and experiment manifest
 |-- literature_review.md            Focused literature review
-|-- proposal.pdf                    Submitted proposal
+|-- ELEC5305_Updated_Project_Proposal.tex  Feedback-aligned proposal source
+|-- proposal.pdf                    Originally submitted proposal
 `-- references.bib                  Project bibliography
 ```
 
