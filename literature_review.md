@@ -14,7 +14,7 @@ These classical methods are normally evaluated using averages over an utterance.
 
 Speech and environmental noise have different temporal patterns. Paliwal, Schwerin, and Wojcicki [4] applied spectral subtraction in the modulation domain, showing that information across time can be used rather than treating every short-time frame independently. The present project does not reproduce that algorithm. It uses the paper to motivate a lightweight temporal change cue and asks whether that cue should temporarily alter the adaptation rate of an otherwise unchanged Wiener enhancer.
 
-The initial implementation begins with log-spectral change because it is simple and interpretable. A short-time modulation-energy cue will be compared with this baseline rather than being assumed to be better. Detector latency and false alarms are measured separately from enhancement quality, since a correctly detected event can still lead to harmful controller behaviour.
+The implementation begins with log-spectral change because it is simple and interpretable. Short-time modulation energy and spectral flux are evaluated against this baseline rather than assumed to be better. Detector latency and false alarms are measured separately from enhancement quality, since a correctly detected event can still lead to harmful controller behaviour.
 
 ## 4. Real-time and latency constraints
 
@@ -30,9 +30,9 @@ The gap addressed by this course project is therefore practical and focused: con
 
 ## 6. Datasets and evaluation
 
-Clean utterances come from the VoiceBank corpus distributed with the University of Edinburgh noisy-speech database [9]. Environmental recordings come from DEMAND [10]. These sources allow reproducible mixtures with known transition time, noise identity, and SNR. STOI [11] is planned as an intelligibility-related measure, alongside SI-SDR, segmental SNR, residual-noise measures, detector latency, false alarms, settling time, and runtime.
+Clean utterances come from the VoiceBank corpus distributed with the University of Edinburgh noisy-speech database [9]. Environmental recordings come from DEMAND [10]. These sources allow reproducible mixtures with known transition time, noise identity, and SNR. The evaluation uses STOI [11], SI-SDR, residual-noise suppression, speech distortion, detector latency, false alarms, settling time, and runtime.
 
-Development mixtures will be used to choose thresholds and adaptation rates. Different speakers, noise excerpts, and transition pairs will be held out for the final test. This prevents the preliminary controller settings from being reported as general performance.
+Development mixtures are used to choose thresholds and adaptation rates before frozen validation. The current splits use different speakers and non-overlapping speech/noise excerpts, but the same transition categories and the same two environmental recordings. The results are therefore described as limited validation rather than broad unseen-noise or unseen-transition generalisation.
 
 ## 7. Project implication
 

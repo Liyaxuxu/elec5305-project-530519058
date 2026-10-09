@@ -26,6 +26,19 @@ for mode = ["fixed", "snr", "change", "oracle"]
     assert(all(size(diagnostics.gainMatrix) > 0));
     separated = apply_stft_gain(clean, fs, diagnostics.gainMatrix);
     assert(~isempty(separated) && all(isfinite(separated)));
+    if mode == "fixed"
+        assert(all(abs(diagnostics.noiseAlpha - 0.995) < 1e-12), ...
+            'Fixed controller changed its noise-update rate.');
+        assert(all(abs(diagnostics.gainAlpha - 0.90) < 1e-12), ...
+            'Fixed controller changed its gain-smoothing rate.');
+        assert(all(diagnostics.gainMatrix >= 0.05 - eps, 'all') && ...
+            all(diagnostics.gainMatrix <= 1 + eps, 'all'), ...
+            'Wiener gain is outside its documented range.');
+        reconstructed = apply_stft_gain(dynamicNoisy, fs, diagnostics.gainMatrix);
+        relativeError = norm(output - reconstructed) / max(norm(output), eps);
+        assert(relativeError < 1e-9, ...
+            'Saved Wiener gains do not reproduce the enhancer output.');
+    end
 end
 window = hamming(512, 'periodic');
 [S, ~, frameTimes] = stft(dynamicNoisy, fs, Window=window, ...

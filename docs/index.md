@@ -6,6 +6,8 @@
 
 [Source code and complete results](https://github.com/Liyaxuxu/elec5305-project-530519058)
 
+**Week 10 checkpoint:** [Project Feedback Two response, completed work, current limitations, and questions for feedback](feedback-two.html)
+
 [Original proposal (PDF)](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/Proposal.pdf) | [proposal_2 (PDF)](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/proposal_2.pdf) | [proposal_2 LaTeX source](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/proposal_2.tex)
 
 ## Latest: testing false alarms

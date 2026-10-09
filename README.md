@@ -8,6 +8,8 @@
 
 **Start here:** Open the executed MATLAB Live Script [`ELEC5305_Project_Summary.mlx`](ELEC5305_Project_Summary.mlx) for a single guided view of the research question, implementation, experiments, figures, results, limitations, and next steps. Its build source is [`tools/build_project_summary.m`](tools/build_project_summary.m).
 
+**Week 10 submission:** The [Project Feedback Two checkpoint](docs/feedback-two.md) gives a brief submission description, maps the first feedback to repository evidence, and identifies the specific questions that remain.
+
 **Proposals:** The original version is available as [PDF](Proposal/Proposal.pdf) and [LaTeX source](Proposal/Proposal.tex). The feedback-aligned version is available as [proposal_2 PDF](Proposal/proposal_2.pdf) and [LaTeX source](Proposal/proposal_2.tex).
 
 ## Review this project in three steps
@@ -146,7 +148,7 @@ Clean VoiceBank speech is mixed with selected DEMAND noises to create controlled
 
 Development uses speaker `p232`; held-out evaluation uses speaker `p257` and non-overlapping noise excerpts. Detector selection is performed only on development cases. The exact inputs are listed in [`data/experiment_manifest.csv`](data/experiment_manifest.csv).
 
-The planned metrics are detection latency, false-alarm rate, transition settling time, transition-region SI-SDR or segmental SNR, STOI, residual-noise suppression, speech distortion, and processing time.
+Implemented metrics include detection latency, false-alarm rate, transition settling time, transition-region SI-SDR, STOI, residual-noise suppression, speech distortion, and processing time.
 
 ## Reproduce the experiments
 
@@ -195,7 +197,9 @@ run('tests/run_tests.m');
 |-- ELEC5305_Project_Summary.mlx   Executed, self-contained project walkthrough
 |-- tools/build_project_summary.m  Build source for the Live Script
 |-- results/                        Figures, metrics, and audio examples
-|-- docs/index.md                   GitHub Pages progress report
+|-- docs/
+|   |-- index.md                    GitHub Pages progress report
+|   `-- feedback-two.md             Week 10 checkpoint and feedback response
 |-- data/                           Dataset provenance and experiment manifest
 |-- literature_review.md            Focused literature review
 |-- Proposal/
@@ -213,7 +217,7 @@ The `bench` branch preserves superseded early experiments and duplicated outputs
 1. Improve change detection without increasing false alarms, using development data only.
 2. Add more speakers, noise environments, transition pairs, and random seeds.
 3. Validate the fixed Wiener implementation against an independent reference.
-4. Repeat held-out testing with confidence intervals or statistical tests.
+4. Repeat final frozen testing with more independent sequence clusters and paired uncertainty intervals.
 5. Add pretrained DeepFilterNet3 only as an optional modern reference.
 
 ## Selected references
