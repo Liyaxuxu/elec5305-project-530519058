@@ -6,6 +6,8 @@
 
 **Student:** Liya Xu | **SID:** 530519058 | **GitHub:** [Liyaxuxu](https://github.com/Liyaxuxu)
 
+**Start here:** Open the executed MATLAB Live Script [`ELEC5305_Project_Summary.mlx`](ELEC5305_Project_Summary.mlx) for a single guided view of the research question, implementation, experiments, figures, results, limitations, and next steps. The editable source is [`ELEC5305_Project_Summary.m`](ELEC5305_Project_Summary.m).
+
 **Proposals:** The original version is available as [PDF](Proposal/Proposal.pdf) and [LaTeX source](Proposal/Proposal.tex). The feedback-aligned version is available as [proposal_2 PDF](Proposal/proposal_2.pdf) and [LaTeX source](Proposal/proposal_2.tex).
 
 ## Latest: false-alarm audit
@@ -181,6 +183,8 @@ run('tests/run_tests.m');
 |   |-- spectral_subtraction.m     Basic fixed baseline
 |   `-- add_noise_at_snr.m         Controlled stationary mixture helper
 |-- tests/run_tests.m              Automated MATLAB checks
+|-- ELEC5305_Project_Summary.mlx   Executed, self-contained project walkthrough
+|-- ELEC5305_Project_Summary.m     Editable source for the Live Script
 |-- results/                        Figures, metrics, and audio examples
 |-- docs/index.md                   GitHub Pages progress report
 |-- data/                           Dataset provenance and experiment manifest
