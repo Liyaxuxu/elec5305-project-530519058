@@ -7,12 +7,6 @@ if nargin < 4, knownTransitionTime = NaN; end
 if nargin < 5, changeCue = "combined"; end
 if nargin < 6, options = struct; end
 if ~isfield(options, 'causalStartup'), options.causalStartup = false; end
-if ~isfield(options, 'fastNoiseAlpha'), options.fastNoiseAlpha = 0.90; end
-if ~isfield(options, 'fastGainAlpha'), options.fastGainAlpha = 0.55; end
-if ~isfield(options, 'fastHoldSeconds'), options.fastHoldSeconds = 0.35; end
-assert(options.fastNoiseAlpha >= 0 && options.fastNoiseAlpha < 1);
-assert(options.fastGainAlpha >= 0 && options.fastGainAlpha < 1);
-assert(options.fastHoldSeconds > 0);
 assert(any(string(mode) == ["fixed", "snr", "change", "oracle"]), ...
     'Unknown controller mode.');
 
@@ -48,7 +42,7 @@ gainAlphaTrace = zeros(1, nFrames);
 meanGainTrace = zeros(1, nFrames);
 meanNoisePsdTrace = zeros(1, nFrames);
 gainMatrix = zeros(size(S));
-holdFrames = max(1, round(options.fastHoldSeconds / hopSeconds));
+holdFrames = max(1, round(0.35 / hopSeconds));
 holdRemaining = 0;
 
 for k = 1:nFrames
@@ -88,8 +82,8 @@ for k = 1:nFrames
             gainAlpha = 0.90 - 0.20 * lowSnrWeight;
         otherwise
             if holdRemaining > 0
-                noiseAlpha = options.fastNoiseAlpha;
-                gainAlpha = options.fastGainAlpha;
+                noiseAlpha = 0.90;
+                gainAlpha = 0.55;
                 holdRemaining = holdRemaining - 1;
             else
                 noiseAlpha = 0.995;

@@ -13,7 +13,6 @@ recentCount = max(2, round(0.20/hop));
 referenceCount = max(2, round(0.65/hop));
 delta = zeros(8, nFrames);
 speechExcess = zeros(1, nFrames);
-noiseOccupancy = -Inf(1, nFrames);
 for k = recentCount+referenceCount:nFrames
     recent = bands(:, k-recentCount+1:k);
     previous = bands(:, k-recentCount-referenceCount+1:k-recentCount);
@@ -23,18 +22,10 @@ for k = recentCount+referenceCount:nFrames
     delta(:, k) = 10*log10((recentFloor+1e-12)./(previousFloor+1e-12));
     speechExcess(k) = max(0, 10*log10( ...
         (sum(bands(:, k))+1e-12)/(sum(recentFloor)+1e-12)));
-    combined = [previous recent];
-    referenceLevel = prctile(sum(combined, 1), 80);
-    persistentFloor = max(sum(recentFloor), sum(previousFloor));
-    % Continuous noise occupies the lower temporal envelope. Speech-only
-    % windows usually have a much lower floor because of pauses and gaps.
-    noiseOccupancy(k) = 10*log10((persistentFloor+1e-12) / ...
-        (referenceLevel+1e-12));
 end
 legacy = scene_change_detector(S, frameTimes, "combined");
 features = struct('frameTimes', frameTimes(:), ...
     'floorScore', median(abs(delta), 1)', ...
     'legacyScore', legacy.score, 'speechExcessDb', speechExcess(:), ...
-    'noiseOccupancyDb', noiseOccupancy(:), ...
     'bandDeltaDb', delta, 'warmupSeconds', 1.0);
 end

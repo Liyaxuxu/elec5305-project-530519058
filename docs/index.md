@@ -6,27 +6,7 @@
 
 [Source code and complete results](https://github.com/Liyaxuxu/elec5305-project-530519058)
 
-## Latest: testing a noise-presence guard
-
-The newest follow-up tested a simple causal rule: permit a scene-change trigger only when the lower temporal spectrum indicates persistent background noise. The threshold and a milder controller response were selected on 48 development cases, frozen, and then run on 48 unused speech/noise excerpts.
-
-![Frozen guard results](assets/noise_guard_confirmation_detector.png)
-
-| Confirmation metric | Reference | Guarded and tuned |
-|---|---:|---:|
-| Detector hit rate | 0.700 unguarded | 0.567 |
-| No-change false alarms/min | 46.19 unguarded | 28.10 |
-| Whole SI-SDR (dB) | 3.401 fixed | 3.481 |
-| Transition SI-SDR (dB) | 4.285 fixed | 4.177 |
-| STOI | 0.85744 fixed | 0.85750 |
-
-The guard reduced false alarms by 39.2%, but it also hid real changes, especially noise onset and offset. The complete enhancer did not improve in the transition region. This is retained as a negative result: one persistent-noise rule cannot represent every direction of acoustic change.
-
-![Frozen controller comparison](assets/noise_guard_confirmation_quality.png)
-
-[Full frozen follow-up and reproducible results](https://github.com/Liyaxuxu/elec5305-project-530519058/tree/main/results/noise_guard_study)
-
-## Previous: testing false alarms
+## Latest: testing false alarms
 
 The latest study compares the original detector with a persistent noise-floor cue and a speech-related threshold. It uses 48 development cases and 48 new validation cases, including 18 no-change controls in each split. Parameters were selected on development data and frozen before validation.
 
