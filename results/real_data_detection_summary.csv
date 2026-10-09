@@ -1,4 +1,0 @@
-condition,detection_latency_s,false_alarms_before_change,total_triggers
-level_change,0.288,6,10
-noise_type_change,0.44,6,11
-noise_onset,1.352,6,10

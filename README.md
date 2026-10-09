@@ -6,9 +6,17 @@
 
 **Student:** Liya Xu | **SID:** 530519058 | **GitHub:** [Liyaxuxu](https://github.com/Liyaxuxu)
 
-**Start here:** Open the executed MATLAB Live Script [`ELEC5305_Project_Summary.mlx`](ELEC5305_Project_Summary.mlx) for a single guided view of the research question, implementation, experiments, figures, results, limitations, and next steps. The editable source is [`ELEC5305_Project_Summary.m`](ELEC5305_Project_Summary.m).
+**Start here:** Open the executed MATLAB Live Script [`ELEC5305_Project_Summary.mlx`](ELEC5305_Project_Summary.mlx) for a single guided view of the research question, implementation, experiments, figures, results, limitations, and next steps. Its build source is [`tools/build_project_summary.m`](tools/build_project_summary.m).
 
 **Proposals:** The original version is available as [PDF](Proposal/Proposal.pdf) and [LaTeX source](Proposal/Proposal.tex). The feedback-aligned version is available as [proposal_2 PDF](Proposal/proposal_2.pdf) and [LaTeX source](Proposal/proposal_2.tex).
+
+## Review this project in three steps
+
+1. Open [`ELEC5305_Project_Summary.mlx`](ELEC5305_Project_Summary.mlx) for the complete executed walkthrough.
+2. Read [`src/transition_wiener.m`](src/transition_wiener.m) and [`src/scene_change_detector.m`](src/scene_change_detector.m) for the main enhancer and detector.
+3. Inspect [`results/detector_revision/`](results/detector_revision/) for the latest frozen audit and [`results/`](results/) for the earlier transition study.
+
+Earlier superseded scripts, results, and duplicated website assets are preserved on the [`bench` branch](https://github.com/Liyaxuxu/elec5305-project-530519058/tree/bench). They are intentionally excluded from `main` so that the assessed project has one clear path through the current work.
 
 ## Latest: false-alarm audit
 
@@ -173,18 +181,19 @@ run('tests/run_tests.m');
 ```text
 .
 |-- src/
+|   |-- README.md                  Guide to entry points and core functions
 |   |-- generate_dynamic_scene.m   Known-time noise transition generator
 |   |-- transition_wiener.m        Four Wiener controller modes
 |   |-- scene_change_detector.m    Four independently evaluated change cues
 |   |-- apply_stft_gain.m          Speech/noise decomposition analysis
 |   |-- run_full_transition_study.m Development and held-out study
-|   |-- run_transition_demo.m      Reproducible preliminary experiment
-|   |-- run_real_data_experiment.m VoiceBank + DEMAND transition experiment
+|   |-- run_transition_demo.m      Dataset-independent smoke experiment
+|   |-- run_detector_revision.m    Frozen false-alarm and detector audit
 |   |-- spectral_subtraction.m     Basic fixed baseline
 |   `-- add_noise_at_snr.m         Controlled stationary mixture helper
 |-- tests/run_tests.m              Automated MATLAB checks
 |-- ELEC5305_Project_Summary.mlx   Executed, self-contained project walkthrough
-|-- ELEC5305_Project_Summary.m     Editable source for the Live Script
+|-- tools/build_project_summary.m  Build source for the Live Script
 |-- results/                        Figures, metrics, and audio examples
 |-- docs/index.md                   GitHub Pages progress report
 |-- data/                           Dataset provenance and experiment manifest
@@ -196,6 +205,8 @@ run('tests/run_tests.m');
 |   `-- proposal_2.tex              Updated LaTeX source
 `-- references.bib                  Project bibliography
 ```
+
+The `bench` branch preserves superseded early experiments and duplicated outputs; it is not part of the recommended review path.
 
 ## Next milestones
 

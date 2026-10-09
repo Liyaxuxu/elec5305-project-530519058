@@ -16,8 +16,11 @@ clearvars;
 close all;
 clc;
 
-projectRoot = fileparts(which('ELEC5305_Project_Summary'));
-if isempty(projectRoot)
+scriptPath = mfilename('fullpath');
+projectRoot = fileparts(scriptPath);
+if strcmpi(string(getLastPathPart(projectRoot)), "tools")
+    projectRoot = fileparts(projectRoot);
+elseif isempty(projectRoot)
     projectRoot = pwd;
 end
 resultsRoot = fullfile(projectRoot, 'results');
@@ -294,4 +297,9 @@ function showCommittedFigure(fileName, figureTitle)
     image(imread(fileName));
     axis image off;
     title(figureTitle, 'Interpreter', 'none');
+end
+
+function name = getLastPathPart(folder)
+%GETLASTPATHPART Return the final folder name without changing directories.
+    [~, name] = fileparts(folder);
 end

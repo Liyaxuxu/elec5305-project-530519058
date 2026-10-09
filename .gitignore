@@ -2,8 +2,6 @@ data/raw/
 results/*.wav
 results/*.mat
 results/*.png
-!results/preliminary_transition_results.png
-!results/real_data_transition_results.png
 !results/detector_ablation.png
 !results/held_out_transition_metrics.png
 !results/speech_noise_tradeoff.png

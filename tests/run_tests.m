@@ -1,3 +1,6 @@
+testDir = fileparts(mfilename('fullpath'));
+addpath(testDir);
+
 rng(1);
 fs = 16000;
 clean = sin(2*pi*220*(0:1/fs:1-1/fs))';
@@ -5,10 +8,9 @@ noise = randn(size(clean));
 noisy = add_noise_at_snr(clean, noise, 0);
 measured = 10*log10(mean(clean.^2) / mean((noisy-clean).^2));
 assert(abs(measured) < 0.1, 'Noise mixer did not produce the requested SNR.');
-outputs = {spectral_subtraction(noisy, fs), wiener_filter(noisy, fs), adaptive_enhance(noisy, fs)};
-for k = 1:numel(outputs)
-    assert(~isempty(outputs{k}) && all(isfinite(outputs{k})), 'Enhancement output is invalid.');
-end
+spectralOutput = spectral_subtraction(noisy, fs);
+assert(~isempty(spectralOutput) && all(isfinite(spectralOutput)), ...
+    'Spectral-subtraction output is invalid.');
 
 transitionTime = 0.5;
 [dynamicNoisy, addedNoise, metadata] = generate_dynamic_scene( ...
@@ -33,4 +35,5 @@ for cue = ["log_spectrum", "spectral_flux", "modulation", "combined"]
     assert(numel(detector.score) == size(S, 2));
     assert(all(isfinite(detector.score)));
 end
+test_detector_revision;
 disp('All speech-enhancement tests passed.');
