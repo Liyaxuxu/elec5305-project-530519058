@@ -6,7 +6,7 @@
 
 **Student:** Liya Xu | **SID:** 530519058 | **GitHub:** [Liyaxuxu](https://github.com/Liyaxuxu)
 
-**Updated proposal:** [`ELEC5305_Updated_Project_Proposal.tex`](ELEC5305_Updated_Project_Proposal.tex) incorporates the teaching feedback and current preliminary evidence. The originally submitted [`proposal.pdf`](proposal.pdf) is retained unchanged.
+**Proposals:** The original version is available as [PDF](Proposal/Proposal.pdf) and [LaTeX source](Proposal/Proposal.tex). The feedback-aligned version is available as [Proposal R Updated PDF](<Proposal/Proposal R Updated.pdf>) and [LaTeX source](<Proposal/Proposal R Updated.tex>).
 
 ## Latest: false-alarm audit
 
@@ -185,8 +185,11 @@ run('tests/run_tests.m');
 |-- docs/index.md                   GitHub Pages progress report
 |-- data/                           Dataset provenance and experiment manifest
 |-- literature_review.md            Focused literature review
-|-- ELEC5305_Updated_Project_Proposal.tex  Feedback-aligned proposal source
-|-- proposal.pdf                    Originally submitted proposal
+|-- Proposal/
+|   |-- Proposal.pdf                Originally submitted proposal
+|   |-- Proposal.tex                Original LaTeX source
+|   |-- Proposal R Updated.pdf      Feedback-aligned proposal
+|   `-- Proposal R Updated.tex      Updated LaTeX source
 `-- references.bib                  Project bibliography
 ```
 
