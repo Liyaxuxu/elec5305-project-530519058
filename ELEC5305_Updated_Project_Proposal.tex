@@ -1,0 +1,183 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{accent}{HTML}{117864}
+\definecolor{textgray}{HTML}{26332E}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  urlcolor=accent,
+  citecolor=accent,
+  pdftitle={ELEC5305 Updated Project Proposal},
+  pdfauthor={Liya Xu}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{ELEC5305 Updated Project Proposal}
+\rhead{Liya Xu}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.12em,topsep=0.2em}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=0.2em,topsep=0.2em}
+
+\newcommand{\projectsection}[1]{%
+  \vspace{0.25em}%
+  {\large\bfseries\color{accent} #1}\par
+  \vspace{0.1em}%
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries\color{textgray}
+  How Quickly Should a Speech Enhancer Adapt?\par}
+  \vspace{0.25em}
+  {\Large\bfseries\color{textgray}
+  Modulation-Aware Speech Enhancement in Dynamic Acoustic Scenes\par}
+  \vspace{0.7em}
+  {\large ELEC5305 Updated Project Proposal}
+\end{center}
+
+\projectsection{Student Information}
+
+\begin{tabularx}{\textwidth}{@{}>{\bfseries}l X@{}}
+Full Name & Liya Xu \\
+Student ID & 530519058 \\
+GitHub Username & Liyaxuxu \\
+GitHub Project & {\small\url{https://github.com/Liyaxuxu/elec5305-project-530519058}} \\[0.3em]
+GitHub Pages & {\small\url{https://liyaxuxu.github.io/elec5305-project-530519058/}} \\
+\end{tabularx}
+
+\projectsection{Project Overview}
+
+Speech enhancement is often evaluated as if the background noise were unchanged throughout an utterance. A practical streaming system may instead move from office noise to traffic, encounter a sudden increase in noise level, or continue after the noise disappears. A fixed noise estimator can react too slowly, while an estimator that always adapts quickly may treat speech as noise and distort it.
+
+This project asks: \textbf{When the acoustic environment changes abruptly, can a lightweight modulation-aware controller reduce adaptation delay and speech distortion in a causal STFT speech enhancer compared with fixed and SNR-only Wiener baselines?} A second question is whether whole-utterance metrics hide short failures immediately after a change. The aim is not to build a large neural model, but to study the transient behaviour of an interpretable system whose noise estimate, change score, smoothing rate, and Wiener gain can be inspected directly.
+
+\projectsection{Background and Motivation}
+
+Spectral subtraction and Wiener filtering are established low-complexity enhancement methods \cite{boll1979,scalart1996}. Their performance depends strongly on the noise estimate. Updating it slowly protects speech but leaves new noise audible; updating it quickly can suppress noise sooner but may damage speech. This trade-off is important because better noise reduction does not necessarily produce better intelligibility \cite{loizou2011}.
+
+Temporal and modulation information provides a possible way to recognise changes that frame SNR alone may miss \cite{paliwal2009}. For example, office noise and traffic noise can have similar total power but different spectro-temporal structure. The project therefore treats change detection and enhancement control as separate problems. This also connects a classical DSP system with current work on causal, low-latency enhancement and lightweight adaptation after deployment \cite{wu2025,cheng2026}. A pretrained neural enhancer such as DeepFilterNet is useful literature context, but it is optional and no neural-network training is required \cite{deepfilternet2023}.
+
+\projectsection{Proposed Methodology}
+
+MATLAB is the main platform. Clean VoiceBank speech will be mixed with selected DEMAND recordings to create controlled dynamic scenes \cite{voicebank2017,demand2013}. Each mixture retains the clean reference, added noise, transition time, and pre/post SNR. The main conditions are:
+
+\begin{itemize}
+  \item a noise-level change using the same noise;
+  \item a noise-type change at approximately constant SNR;
+  \item noise onset and noise disappearance; and
+  \item the same type change during active speech and during a speech pause.
+\end{itemize}
+
+All main systems use the same causal STFT and Wiener-gain equation. Only the controller changes:
+
+\begin{enumerate}
+  \item \textbf{Fixed Wiener:} fixed noise-update and gain-smoothing rates.
+  \item \textbf{SNR-adaptive Wiener:} rates controlled by estimated frame SNR.
+  \item \textbf{Change-aware Wiener:} a simple log-spectral, spectral-flux, or modulation cue temporarily accelerates noise tracking and reduces gain smoothing.
+  \item \textbf{Oracle Wiener:} the known simulated transition time triggers adaptation. This is a diagnostic reference, not a deployable method or guaranteed quality upper bound.
+\end{enumerate}
+
+Fixed spectral subtraction remains a basic ELEC5305 baseline rather than part of a blended gain. Detector performance will be measured independently using detection rate, false alarms, and latency. Enhancement evaluation will include STOI \cite{taal2011}, SI-SDR, processing time, settling time, transition-region performance, and later steady-state performance. The saved gain will also be applied separately to clean-speech and noise STFTs so that speech distortion can be distinguished from residual-noise suppression.
+
+Thresholds and controller settings will be selected on development data and frozen before held-out evaluation. Speech files and noise excerpts will not overlap between splits. Because the currently available VoiceBank test subset contains only two speakers, conclusions will be limited to the tested data rather than described as broad unseen-speaker generalisation.
+
+\projectsection{Preliminary Progress and Expected Outcomes}
+
+The dynamic-scene generator, five enhancement baselines, detector ablations, automated tests, transition metrics, figures, and listening examples have been implemented. In the latest frozen detector audit, the revised cue detected 23 of 30 scheduled validation changes, compared with 20 of 30 for the earlier combined cue. No-change false alarms fell from 62.38 to 41.90 per minute and matched latency fell from 0.617 to 0.175 seconds. However, whole-signal SI-SDR and STOI did not improve, and clean-speech-only false alarms remained a serious weakness. These results separate a detector improvement from an improvement to the complete enhancer and motivate further controller analysis.
+
+The final deliverable will be a reproducible dynamic speech-enhancement auditor containing MATLAB code, exact mixture metadata, tests, per-case results, transition-centred figures, and audio examples. A useful outcome may be either a repeatable improvement or a clear negative result showing when simple modulation cues fail. The main contribution is a transparent account of adaptation delay, residual noise, and speech distortion rather than a claim of state-of-the-art average quality.
+
+\projectsection{Timeline}
+
+\begin{tabularx}{\textwidth}{|p{2.4cm}|X|}
+\hline
+\textbf{Weeks} & \textbf{Work} \\
+\hline
+1--2 & Refine the topic, research question, and four-controller comparison. \\
+\hline
+3--5 & Review literature, collect VoiceBank/DEMAND data, and define reproducible splits. \\
+\hline
+6--9 & Implement the causal Wiener pipeline, scene generator, detectors, tests, and preliminary evaluation. \\
+\hline
+10--11 & Analyse false alarms, tune only on development data, run ablations, and freeze the final evaluation protocol. \\
+\hline
+12--13 & Run the held-out study, interpret negative and positive results, and complete the report, video, and GitHub site. \\
+\hline
+\end{tabularx}
+
+\begin{thebibliography}{10}
+
+\bibitem{boll1979}
+S. F. Boll, ``Suppression of acoustic noise in speech using spectral subtraction,''
+\emph{IEEE Transactions on Acoustics, Speech, and Signal Processing}, vol. 27,
+no. 2, pp. 113--120, 1979. doi: \href{https://doi.org/10.1109/TASSP.1979.1163209}{10.1109/TASSP.1979.1163209}.
+
+\bibitem{scalart1996}
+P. Scalart and J. V. Filho, ``Speech enhancement based on a priori signal to noise estimation,''
+in \emph{Proceedings of ICASSP}, vol. 2, pp. 629--632, 1996.
+doi: \href{https://doi.org/10.1109/ICASSP.1996.543199}{10.1109/ICASSP.1996.543199}.
+
+\bibitem{loizou2011}
+P. C. Loizou and G. Kim, ``Reasons why current speech-enhancement algorithms do not improve speech intelligibility and suggested solutions,''
+\emph{IEEE Transactions on Audio, Speech, and Language Processing}, vol. 19,
+no. 1, pp. 47--56, 2011. doi: \href{https://doi.org/10.1109/TASL.2010.2045180}{10.1109/TASL.2010.2045180}.
+
+\bibitem{paliwal2009}
+K. K. Paliwal, B. Schwerin, and K. Wojcicki,
+``Modulation domain spectral subtraction for speech enhancement,''
+in \emph{Proceedings of Interspeech}, pp. 1353--1356, 2009.
+doi: \href{https://doi.org/10.21437/Interspeech.2009-413}{10.21437/Interspeech.2009-413}.
+
+\bibitem{deepfilternet2023}
+H. Schr\"oter et al., ``DeepFilterNet: Perceptually motivated real-time speech enhancement,''
+in \emph{Proceedings of Interspeech}, pp. 2008--2012, 2023.
+doi: \href{https://doi.org/10.21437/Interspeech.2023-120}{10.21437/Interspeech.2023-120}.
+
+\bibitem{wu2025}
+H. Wu and S. Braun, ``Ultra-low latency speech enhancement: A comprehensive study,''
+in \emph{Proceedings of ICASSP}, 2025.
+doi: \href{https://doi.org/10.1109/ICASSP49660.2025.10889823}{10.1109/ICASSP49660.2025.10889823}.
+
+\bibitem{cheng2026}
+L. Cheng and S.-C. Liu, ``Towards lightweight adaptation of speech enhancement models in real-world environments,''
+\emph{arXiv preprint arXiv:2603.07471}, 2026.
+\url{https://arxiv.org/abs/2603.07471}.
+
+\bibitem{voicebank2017}
+C. Valentini-Botinhao, ``Noisy speech database for training speech enhancement algorithms and TTS models,''
+University of Edinburgh DataShare, 2017.
+doi: \href{https://doi.org/10.7488/ds/2117}{10.7488/ds/2117}.
+
+\bibitem{demand2013}
+J. Thiemann, N. Ito, and E. Vincent, ``The Diverse Environments Multi-channel Acoustic Noise Database (DEMAND),''
+\emph{Proceedings of Meetings on Acoustics}, vol. 19, 035081, 2013.
+doi: \href{https://doi.org/10.1121/1.4799597}{10.1121/1.4799597}.
+
+\bibitem{taal2011}
+C. H. Taal, R. C. Hendriks, R. Heusdens, and J. Jensen,
+``An algorithm for intelligibility prediction of time-frequency weighted noisy speech,''
+\emph{IEEE Transactions on Audio, Speech, and Language Processing}, vol. 19,
+no. 7, pp. 2125--2136, 2011.
+doi: \href{https://doi.org/10.1109/TASL.2011.2114881}{10.1109/TASL.2011.2114881}.
+
+\end{thebibliography}
+
+\end{document}
