@@ -1,0 +1,6 @@
+{
+  "family": "floor",
+  "threshold": 8,
+  "persistenceFrames": 4,
+  "speechWeight": 0.75
+}

@@ -1,0 +1,3 @@
+method,GroupCount,mean_reference_speech_active,mean_within_100ms_of_reference_onset
+legacy_combined,354,0.596045197740113,0.807909604519774
+revised,231,0.510822510822511,0.593073593073593

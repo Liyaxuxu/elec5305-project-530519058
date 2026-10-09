@@ -14,8 +14,8 @@ Raw audio is kept outside Git history. The preliminary real-data experiment uses
 
 ```text
 data/raw/clean_testset_wav/
-data/raw/OOFFICE_16k/
-data/raw/STRAFFIC_16k/
+data/raw/OOFFICE/
+data/raw/STRAFFIC/
 data/raw/downloads/
 ```
 
@@ -24,5 +24,7 @@ The current subset is sufficient for preliminary implementation and testing. The
 The current protocol is recorded in [`experiment_manifest.csv`](experiment_manifest.csv). Speaker `p232` is used for the preliminary development run; speaker `p257` is reserved for held-out testing. DEMAND excerpts used for final testing will not overlap the development excerpts.
 
 ## Reproducibility rule
+
+The latest detector-revision study has exact case manifests in [`development_manifest.csv`](../results/detector_revision/development_manifest.csv) and [`validation_manifest.csv`](../results/detector_revision/validation_manifest.csv). Both split the source utterances and noise intervals without overlap. Read the [revised protocol](../results/detector_revision/README.md) for calibration, cropping, seeds, change times, and limitations. The earlier p257 pilot has already been inspected; the new validation uses unused p257 utterances, not a newly unseen speaker.
 
 Development mixtures may be used to choose change thresholds and controller rates. Final test mixtures must use different speakers or utterances, non-overlapping noise excerpts, and held-out transition pairs. Raw third-party audio must not be committed to this repository.

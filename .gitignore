@@ -14,3 +14,4 @@ results/audio/real_data/
 *.asv
 *.m~
 .DS_Store
+results/detector_revision/*.mat

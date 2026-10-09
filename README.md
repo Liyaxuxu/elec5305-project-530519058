@@ -6,6 +6,21 @@
 
 **Student:** Liya Xu | **SID:** 530519058 | **GitHub:** [Liyaxuxu](https://github.com/Liyaxuxu)
 
+## Latest: false-alarm audit
+
+The latest experiment adds no-change controls, a persistent noise-floor cue, a speech-related threshold, causal startup checks, and frozen validation on unused speech/noise excerpts. It contains 48 development and 48 validation cases. The revised detector is an experimental option; the default controller is preserved.
+
+| Validation result | Original combined | Revised |
+|---|---:|---:|
+| Detected scheduled changes | 20/30 | 23/30 |
+| No-change false alarms/min | 62.38 | 41.90 |
+| Matched latency (s) | 0.617 | 0.175 |
+| STOI | 0.83446 | 0.83108 |
+
+**The complete enhancer has not improved.** Detection false alarms fell by 32.8% overall, but STOI and whole-signal SI-SDR declined. Clean-speech-only false alarms increased from 65.71 to 98.57/min despite improvements in the office and traffic controls. These failures are retained and discussed in the [full audit, protocol, ablations, uncertainty estimates and reproduction instructions](results/detector_revision/README.md).
+
+The results below are the earlier pilot, retained for provenance. They use different excerpts, initialization and scoring; do not compare their 60% detection rate or false-alarm counts directly with this revision. The old batch initialization was not fully causal at startup. The revision verifies past-only decisions with future-perturbation tests and adds frame-availability time to detection latency.
+
 ## Project focus
 
 This project studies the transient behaviour of a causal STFT speech enhancer when the acoustic environment changes abruptly. The main question is:
@@ -27,7 +42,7 @@ A second question is whether whole-utterance metrics hide short but important fa
 | Fixed Wiener enhancer | Complete | Uses one common STFT/Wiener pipeline. |
 | SNR-adaptive Wiener controller | Preliminary | Changes PSD-update and gain-smoothing rates using estimated frame SNR. |
 | Change-aware Wiener controller | Preliminary | Uses a log-spectral change score, adaptive threshold, and hold time. |
-| Oracle change-triggered Wiener | Complete | Uses the known simulated transition time as a diagnostic upper bound. |
+| Oracle change-triggered Wiener | Complete | Uses the known simulated transition time as a diagnostic reference, not a guaranteed quality upper bound. |
 | Automated tests | Complete | Mixing, output validity, scene metadata, and all controller modes pass. |
 | Real VoiceBank/DEMAND evaluation | Expanded preliminary | Five conditions, three repetitions, separate development/held-out speakers, and non-overlapping noise excerpts. |
 | Change-cue ablation | Complete for current data | Log-spectrum, spectral flux, short-time modulation, and combined cues evaluated independently. |
@@ -72,7 +87,7 @@ Clean speech + noise A + noise B + known transition time
 
 All four main systems use the same Wiener enhancement equation. Only the controller changes. This makes it possible to separate the effect of change detection from the effect of faster noise tracking and weaker gain smoothing.
 
-## Expanded real-data results
+## Historical Pilot Results
 
 The expanded study uses VoiceBank speaker `p232` for development and held-out speaker `p257` for testing. Each split contains three speech sequences and non-overlapping DEMAND excerpts. Five conditions are tested: level change, noise-type change, onset, offset, and the same noise-type change during a controlled speech pause. Every change occurs at 3.0 seconds.
 

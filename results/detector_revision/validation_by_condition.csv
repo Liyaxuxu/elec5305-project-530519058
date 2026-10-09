@@ -1,0 +1,17 @@
+method,condition,hit_rate,latency_s,false_alarms_per_minute
+legacy_combined,clean_control,0,NaN,65.7142857142857
+legacy_combined,level,0.833333333333333,0.7710125,54.2857142857143
+legacy_combined,offset,1,0.102854166666667,67.1428571428571
+legacy_combined,onset,0.333333333333333,1.4345,44.2857142857143
+legacy_combined,stationary_office,0,NaN,65.7142857142857
+legacy_combined,stationary_traffic,0,NaN,55.7142857142857
+legacy_combined,type,0.5,1.06877083333333,47.1428571428571
+legacy_combined,type_pause,0.666666666666667,0.446265625,48.5714285714286
+revised,clean_control,0,NaN,98.5714285714286
+revised,level,0.666666666666667,0.11621875,31.4285714285714
+revised,offset,1,0.153520833333334,58.5714285714286
+revised,onset,0.833333333333333,0.178975,40
+revised,stationary_office,0,NaN,27.1428571428571
+revised,stationary_traffic,0,NaN,0
+revised,type,0.666666666666667,0.12621875,11.4285714285714
+revised,type_pause,0.666666666666667,0.310453125,14.2857142857143

@@ -6,6 +6,30 @@
 
 [Source code and complete results](https://github.com/Liyaxuxu/elec5305-project-530519058)
 
+## Latest: testing false alarms
+
+The latest study compares the original detector with a persistent noise-floor cue and a speech-related threshold. It uses 48 development cases and 48 new validation cases, including 18 no-change controls in each split. Parameters were selected on development data and frozen before validation.
+
+![Original and revised detection on new excerpts](assets/revision_validation_detectors.png)
+
+| Validation metric | Original | Revised |
+|---|---:|---:|
+| Changes detected within 1.5 seconds | 20/30 | 23/30 |
+| False alarms/min on no-change controls | 62.38 | 41.90 |
+| Matched detection latency (s) | 0.617 | 0.175 |
+| Whole-signal SI-SDR (dB) | 4.507 | 3.612 |
+| STOI | 0.83446 | 0.83108 |
+
+False alarms decreased by 32.8% overall, but enhanced speech quality declined. The revised detector remains experimental. It also fails on clean speech alone: false alarms increased from 65.71 to 98.57/min, while office and traffic controls improved. The results do not establish an improved complete enhancer.
+
+The new protocol checks causality at startup, uses one-to-one event matching, and includes duplicate/late alarms. Six sequence clusters, rather than all condition variants, are used for uncertainty estimates. The detection-rate difference is uncertain on this small sample. p257 has appeared in earlier work, so these are unused excerpts from a previously seen speaker.
+
+[Full audit and reproducible code](https://github.com/Liyaxuxu/elec5305-project-530519058/tree/main/results/detector_revision)
+
+## Earlier Pilot
+
+The following material preserves the previous experiment. Its startup estimate reads an initial batch of frames; the latest experiment corrects this with past-only calibration. Its dataset and false-alarm definition differ, so the old and new numbers are not directly comparable. The time-informed oracle is a diagnostic reference, not a guaranteed upper bound on speech quality.
+
 ## Research question
 
 Can a lightweight modulation/change-aware controller reduce adaptation delay and speech distortion after an abrupt acoustic change, compared with fixed and SNR-only Wiener baselines?

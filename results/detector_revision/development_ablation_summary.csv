@@ -1,0 +1,4 @@
+method,hit_rate,matched_latency_s,penalised_latency_s,false_alarms_per_minute,no_change_false_alarms_per_minute,change_cases,no_change_cases
+legacy_combined,1,0.848027083333333,0.848027083333333,63.2142857142857,70,30,18
+revised,0.966666666666667,0.219594827586207,0.262275,41.25,48.5714285714286,30,18
+floor_without_speech_gate,0.966666666666667,0.224560344827586,0.267075,45.7142857142857,52.8571428571429,30,18
