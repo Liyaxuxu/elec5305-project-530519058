@@ -6,7 +6,7 @@
 
 [Source code and complete results](https://github.com/Liyaxuxu/elec5305-project-530519058)
 
-[Original proposal (PDF)](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/Proposal.pdf) | [Updated proposal (PDF)](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/Proposal%20R%20Updated.pdf) | [Updated LaTeX source](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/Proposal%20R%20Updated.tex)
+[Original proposal (PDF)](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/Proposal.pdf) | [proposal_2 (PDF)](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/proposal_2.pdf) | [proposal_2 LaTeX source](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/proposal_2.tex)
 
 ## Latest: testing false alarms
 

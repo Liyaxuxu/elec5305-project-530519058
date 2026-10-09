@@ -6,7 +6,7 @@
 
 **Student:** Liya Xu | **SID:** 530519058 | **GitHub:** [Liyaxuxu](https://github.com/Liyaxuxu)
 
-**Proposals:** The original version is available as [PDF](Proposal/Proposal.pdf) and [LaTeX source](Proposal/Proposal.tex). The feedback-aligned version is available as [Proposal R Updated PDF](<Proposal/Proposal R Updated.pdf>) and [LaTeX source](<Proposal/Proposal R Updated.tex>).
+**Proposals:** The original version is available as [PDF](Proposal/Proposal.pdf) and [LaTeX source](Proposal/Proposal.tex). The feedback-aligned version is available as [proposal_2 PDF](Proposal/proposal_2.pdf) and [LaTeX source](Proposal/proposal_2.tex).
 
 ## Latest: false-alarm audit
 
@@ -188,8 +188,8 @@ run('tests/run_tests.m');
 |-- Proposal/
 |   |-- Proposal.pdf                Originally submitted proposal
 |   |-- Proposal.tex                Original LaTeX source
-|   |-- Proposal R Updated.pdf      Feedback-aligned proposal
-|   `-- Proposal R Updated.tex      Updated LaTeX source
+|   |-- proposal_2.pdf              Feedback-aligned proposal
+|   `-- proposal_2.tex              Updated LaTeX source
 `-- references.bib                  Project bibliography
 ```
 
