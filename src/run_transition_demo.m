@@ -1,11 +1,11 @@
-%RUN_TRANSITION_DEMO Preliminary dynamic-scene Wiener comparison.
+%RUN_TRANSITION_DEMO Small demo with a synthetic noise change (no data needed).
 rng(5305);
 fs = 16000;
 duration = 6;
 t = (0:1/fs:duration-1/fs)';
 transitionTime = 3.0;
 
-% A deterministic speech-like source keeps this demo dataset-independent.
+% synthetic speech-like signal so the demo runs without the datasets
 f0 = 125 + 18 * sin(2*pi*0.55*t);
 phase = 2*pi*cumsum(f0) / fs;
 envelope = 0.25 + 0.75 * abs(sin(2*pi*2.2*t));

@@ -1,7 +1,7 @@
 function diagnostics = scene_change_detector(S, frameTimes, cue)
-%SCENE_CHANGE_DETECTOR Causal change cues and robust trigger decisions.
-% S is a frequency-by-time STFT matrix. Supported cues are
-% "log_spectrum", "spectral_flux", "modulation", and "combined".
+%SCENE_CHANGE_DETECTOR Original (causal) change detector.
+% S is the STFT (frequency x time). cue: "log_spectrum", "spectral_flux",
+% "modulation" or "combined".
 if nargin < 3, cue = "combined"; end
 cue = string(cue);
 validCues = ["log_spectrum", "spectral_flux", "modulation", "combined"];
@@ -73,7 +73,7 @@ for k = warmupFrames + 1:nFrames
 end
 
 candidate = selectedScore > threshold;
-% Two adjacent exceedances reject isolated speech-induced spikes.
+% need two frames in a row so single speech spikes don't trigger
 persistentCandidate = candidate & [false candidate(1:end - 1)];
 holdFrames = max(1, round(0.35 / median(diff(frameTimes))));
 triggers = false(1, nFrames);

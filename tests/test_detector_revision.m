@@ -1,5 +1,5 @@
 function test_detector_revision
-% Behavioral tests: event accounting, no future leakage, gain decomposition.
+% Tests: event counting, no use of future samples, gain decomposition.
 root = fileparts(fileparts(mfilename('fullpath'))); addpath(fullfile(root,'src'));
 rng(9); fs = 16000; n = 4*fs; time = (0:n-1)'/fs;
 clean = 0.1*sin(2*pi*210*time); clean(time<0.5) = 0;
@@ -29,7 +29,7 @@ for mode = ["fixed","snr","change","oracle"]
         apply_stft_gain(noise,fs,d.gainMatrix);
     assert(norm(y-decomposition)/norm(y)<1e-9);
 end
-% Stronger causality test inside the original 250 ms initialization interval.
+% causality check inside the first 250 ms as well
 future = noisy; future(time>=0.15) = 2*randn(sum(time>=0.15),1);
 [~,a] = transition_wiener(noisy,fs,"fixed",NaN,"combined",options);
 [~,b] = transition_wiener(future,fs,"fixed",NaN,"combined",options);

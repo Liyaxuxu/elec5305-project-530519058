@@ -1,0 +1,8 @@
+{
+  "fastNoiseAlpha": 0.9,
+  "fastGainAlpha": 0.75,
+  "holdSeconds": 0.35,
+  "releaseSeconds": 0,
+  "noiseFloorGuard": false,
+  "gainFloor": 0.05
+}

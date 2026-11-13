@@ -1,5 +1,5 @@
 function summarise_detector_revision
-%SUMMARISE_DETECTOR_REVISION Paired, sequence-clustered uncertainty estimates.
+%SUMMARISE_DETECTOR_REVISION Tables and bootstrap intervals for the detector audit.
 root = fileparts(fileparts(mfilename('fullpath')));
 out = fullfile(root,'results','detector_revision');
 results = table;
@@ -24,7 +24,7 @@ for split = ["development","validation"]
     writetable(groupsummary(events,'method','mean', ...
         {'reference_speech_active','within_100ms_of_reference_onset'}), ...
         fullfile(out,split+"_false_alarm_context.csv"));
-    % All eight variants reuse a sequence: resample six sequences, not 48 rows.
+    % bootstrap over the 6 sequences, not the 48 cases
     deltas = zeros(6,5);
     for replicate = 1:6
         old = detections(detections.replicate==replicate & ...

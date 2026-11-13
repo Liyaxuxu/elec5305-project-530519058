@@ -1,0 +1,8 @@
+# For the optional DeepFilterNet3 reference (Python 3.10, CPU).
+# deepfilternet 0.5.6 doesn't work with newer torchaudio, so versions are pinned.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.0.1
+torchaudio==2.0.2
+deepfilternet==0.5.6
+soundfile
+numpy<2

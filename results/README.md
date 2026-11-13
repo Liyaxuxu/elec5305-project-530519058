@@ -1,4 +1,6 @@
-# Result Definitions
+# Earlier Pilot Result Definitions
+
+This file documents the earlier six-second pilot study. The final eight-second controller-ablation protocol and results are described in the [main README](../README.md) and stored in [`results/controller_ablation/`](controller_ablation/).
 
 ## Evaluation regions
 

@@ -14,3 +14,17 @@ results/audio/real_data/
 .DS_Store
 tmp/
 results/detector_revision/*.mat
+tools/external/
+results/auditor_example/audio/
+results/controller_ablation/*.mat
+data/dfn_io/
+.venv-dfn/
+__pycache__/
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+report/*.bbl
+report/*.blg
+report/*.fls
+report/*.fdb_latexmk

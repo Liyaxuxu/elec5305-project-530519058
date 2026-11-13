@@ -2,7 +2,7 @@
 
 **Liya Xu | SID 530519058 | ELEC5305**
 
-[Project site](https://liyaxuxu.github.io/elec5305-project-530519058/) | [GitHub repository](https://github.com/Liyaxuxu/elec5305-project-530519058) | [Executed MATLAB summary](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/ELEC5305_Project_Summary.mlx)
+[Project site](https://liyaxuxu.github.io/elec5305-project-530519058/) | [GitHub repository](https://github.com/Liyaxuxu/elec5305-project-530519058)
 
 ## Brief submission description
 

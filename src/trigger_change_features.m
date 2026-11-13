@@ -1,5 +1,5 @@
 function detector = trigger_change_features(features, config)
-%TRIGGER_CHANGE_FEATURES Persistence and speech-conditioned trigger threshold.
+%TRIGGER_CHANGE_FEATURES Turn the revised detector features into triggers.
 t = features.frameTimes;
 hop = median(diff(t));
 if config.family == "floor"
@@ -7,7 +7,7 @@ if config.family == "floor"
 else
     score = features.legacyScore;
 end
-% This is a heuristic speech proxy, not a trained or reference-label VAD.
+% rough speech check, not a real VAD
 threshold = config.threshold + config.speechWeight * ...
     max(features.speechExcessDb-6, 0);
 above = score > threshold & t >= features.warmupSeconds;

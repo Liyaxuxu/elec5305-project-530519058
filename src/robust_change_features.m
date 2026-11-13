@@ -1,7 +1,8 @@
 function features = robust_change_features(S, frameTimes)
-%ROBUST_CHANGE_FEATURES Past-only noise-floor and speech-proxy descriptors.
+%ROBUST_CHANGE_FEATURES Noise-floor features for the revised detector (past frames only).
 hop = median(diff(frameTimes));
-% MATLAB's default centered STFT: use positive frequencies once, not twice.
+% For the centred 512-bin STFT at 16 kHz, retain 62.5 Hz to 8 kHz.
+% Keep the original bin selection used to tune the frozen detector.
 P = abs(S(floor(size(S, 1)/2)+2:end, :)).^2 + 1e-12;
 nFrames = size(P, 2);
 edges = round(linspace(1, size(P, 1)+1, 9));
@@ -16,7 +17,7 @@ speechExcess = zeros(1, nFrames);
 for k = recentCount+referenceCount:nFrames
     recent = bands(:, k-recentCount+1:k);
     previous = bands(:, k-recentCount-referenceCount+1:k-recentCount);
-    % Lower temporal quantiles limit the influence of short voiced peaks.
+    % low percentile, so short speech peaks don't count much
     recentFloor = prctile(recent, 20, 2);
     previousFloor = prctile(previous, 20, 2);
     delta(:, k) = 10*log10((recentFloor+1e-12)./(previousFloor+1e-12));

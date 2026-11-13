@@ -49,4 +49,5 @@ for cue = ["log_spectrum", "spectral_flux", "modulation", "combined"]
     assert(all(isfinite(detector.score)));
 end
 test_detector_revision;
+test_controller_extensions;
 disp('All speech-enhancement tests passed.');

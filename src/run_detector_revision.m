@@ -43,7 +43,7 @@ if phase == "develop"
             end
         end
     end
-    % A detector cannot win simply by never firing. Misses carry full latency.
+    % a detector can't win by never firing: a miss counts as 1.5 s delay
     eligible = searchRows.hit_rate >= baseSummary.hit_rate-0.05;
     cost = searchRows.false_alarms_per_minute + ...
         3*searchRows.penalised_latency_s + 20*(1-searchRows.hit_rate);
@@ -81,7 +81,7 @@ writetable(events,fullfile(out,split+"_events.csv"));
 writetable(summary,fullfile(out,split+"_summary.csv"));
 disp(config); disp(summary);
 
-% Audit fixed vs both detectors using identical causal-startup Wiener code.
+% run the enhancer with each detector (same causal Wiener code)
 metrics = table;
 for c = 1:numel(cases)
     current = cases(c); n = numel(current.clean);
@@ -99,7 +99,7 @@ for c = 1:numel(cases)
         else
             [output, diag] = transition_wiener(current.noisy,current.fs, ...
                 mode,current.changeTime,"combined",options);
-            % Reapplying the saved gain must reconstruct the actual output.
+            % check: gain applied to speech + noise gives the same output
             reconstruction = apply_stft_gain(current.clean,current.fs,diag.gainMatrix)+ ...
                 apply_stft_gain(current.noise,current.fs,diag.gainMatrix);
             assert(norm(reconstruction-output)/max(norm(output),eps)<1e-9);
@@ -132,7 +132,7 @@ function [rows,events] = evaluate(cases,detectors,method)
 rows = table; events = table;
 for c = 1:numel(cases)
     current = cases(c); detector = detectors{c};
-    % The centered 32 ms analysis frame is available 16 ms after its centre.
+    % a 32 ms frame is only available 16 ms after its centre
     alarmTimes = detector.frameTimes(detector.triggers)+0.016;
     result = score_change_events(alarmTimes,current.changeTime,8,1);
     penalisedLatency = 1.5;
@@ -190,7 +190,7 @@ for j = 1:3
     xticklabels({'Original','Revised'}); title(labels{j}); grid on;
 end
 exportgraphics(fig,fullfile(out,split+"_detectors.png"),Resolution=150); close(fig);
-% Fixed diagnostic example: first stationary office case, no cherry-picking.
+% example plot: first stationary office case (not picked by hand)
 c = find(string({cases.condition})=="stationary_office",1);
 fig = figure('Visible','off','Color','w','Position',[100 100 1000 620]);
 tiledlayout(3,1);
