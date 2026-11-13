@@ -9,7 +9,7 @@ Liya Xu (SID 530519058) | GitHub: [Liyaxuxu](https://github.com/Liyaxuxu)
 
 | Item | Link |
 |---|---|
-| Final report (PDF) | [report/main.pdf](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/report/main.pdf) |
+| Final report (PDF) | [ELEC5305_Final_Report_LiyaXu_530519058.pdf](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/report/ELEC5305_Final_Report_LiyaXu_530519058.pdf) |
 | Video demo | [YouTube](https://youtu.be/natY-4UzcTU) (backup: [Google Drive](https://drive.google.com/file/d/1G7SuL2PIYqyZcJeBJBOGOTtxOiQHFxEb/view)) |
 | Project website | [liyaxuxu.github.io/elec5305-project-530519058](https://liyaxuxu.github.io/elec5305-project-530519058/) |
 | Week 10 checkpoint | [docs/feedback-two.md](docs/feedback-two.md) |
@@ -294,7 +294,7 @@ The [Dynamic Speech Enhancement Auditor](src/dynamic_enhancement_auditor.m) take
 | Spectral subtraction, VOICEBOX and DeepFilterNet3 references | Done |
 | Paired statistics, hypothesis test, ranking analysis | Done |
 | Dynamic Speech Enhancement Auditor (Figure 1) | Done |
-| Final report and video | Done ([report](report/main.pdf), [video](https://youtu.be/natY-4UzcTU)) |
+| Final report and video | Done ([report](report/ELEC5305_Final_Report_LiyaXu_530519058.pdf), [video](https://youtu.be/natY-4UzcTU)) |
 
 ## Repository structure
 

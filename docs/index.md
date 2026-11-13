@@ -6,7 +6,7 @@
 
 [Source code and full results](https://github.com/Liyaxuxu/elec5305-project-530519058) | [Original proposal](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/Proposal.pdf) | [Updated proposal](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/Proposal/proposal_2.pdf)
 
-**Final report:** [PDF](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/report/main.pdf) | **Video demo:** [YouTube](https://youtu.be/natY-4UzcTU) (backup: [Google Drive](https://drive.google.com/file/d/1G7SuL2PIYqyZcJeBJBOGOTtxOiQHFxEb/view))
+**Final report:** [PDF](https://github.com/Liyaxuxu/elec5305-project-530519058/blob/main/report/ELEC5305_Final_Report_LiyaXu_530519058.pdf) | **Video demo:** [YouTube](https://youtu.be/natY-4UzcTU) (backup: [Google Drive](https://drive.google.com/file/d/1G7SuL2PIYqyZcJeBJBOGOTtxOiQHFxEb/view))
 
 ## Research question
 
