@@ -311,6 +311,7 @@ The [Dynamic Speech Enhancement Auditor](src/dynamic_enhancement_auditor.m) take
 |   |-- transition_metrics.m            all enhancement metrics
 |   |-- spectral_subtraction.m          course baseline
 |   |-- run_controller_ablation.m       main experiment
+|   |-- validate_dfn_outputs.m          checks the DeepFilterNet3 WAV files
 |   |-- summarise_controller_ablation.m final tables and statistics
 |   |-- plot_controller_ablation.m      figures
 |   |-- plot_onset_noise_estimate.m     noise estimate around an onset
@@ -324,7 +325,7 @@ The [Dynamic Speech Enhancement Auditor](src/dynamic_enhancement_auditor.m) take
 |   |-- check_against_voicebox.m        reference check
 |   |-- run_deepfilternet.py            optional DeepFilterNet3 reference
 |   `-- requirements-dfn.txt
-|-- report/                             final report (LaTeX source, figures, PDF)
+|-- report/                             final report (PDF)
 |-- results/                            figures, CSV results and audio examples
 |-- data/                               dataset instructions and manifest (no audio)
 |-- docs/                               project website and Week 10 checkpoint
